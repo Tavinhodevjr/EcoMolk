@@ -31,9 +31,14 @@ Users.init({
         defaultValue: DataTypes.NOW
     },
 
-    tipo_usuario: {
+    telefone: {
         type: DataTypes.STRING,
-        defaultValue: 'usuario'
+        allowNull: false
+    },
+
+    nome_empresa: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 
 }, {
