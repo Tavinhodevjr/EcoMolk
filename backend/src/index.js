@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const sequelize = require('./config/database');
 const Users = require('./models/users');
-// const Residuos = require('./models/residuos');
+const Residuos = require('./models/residuos');
 const session = require('express-session')
 
 const app = express();
@@ -35,6 +35,20 @@ async function conn() {
 
 }
 conn();
+
+//MIDDLEWARE PARA VERIFICAR SE O USUÁRIO ESTÁ LOGADO
+function verificaLogin(req, res, next) {
+    
+    //VERIFICA SE O ID DO USUÁRIO ESTA SALVO NA SESSÃO
+    if(req.session.userId) {
+        return next()
+    }
+
+    else{
+        //RETORNA UMA MENSAGEM DE ERRO
+        return res.status(401).json({ message: 'Acesso negado. Faça login para continuar.' })
+    }
+}
 
 //ROTA PARA CADASTRO DE USUÁRIOS
 app.post('/cadastrar', async (req, res) => { 
@@ -87,6 +101,33 @@ app.post('/login', async (req, res) => {              //     **ADICIONAR RETURN 
     catch (error) {
         //RETORNA UMA MENSAGEM DE ERRO
         return res.status(500).json({ message: 'Erro ao tentar fazer login', error: error.message })
+    }
+})
+
+//ROTA PARA CADASTRO DE RESIDUOS (COM USUÁRIO LOGADO)
+app.post('/residuos', verificaLogin, async (req, res) =>{
+
+    try {
+        //SOLICITA OS DADOS NO CORPO DA REQUISIÇÃO
+        const { tipo, descricao, quantidade, forma_descarte, tipo_entrega } = req.body
+
+        //CADASTRANDO NOVO RESÍDUO COM ID DO USUÁRIO DA SESSÃO
+        const newResiduo = await Residuos.create({
+            id_usuario: req.session.userId,
+            tipo, 
+            descricao,
+            quantidade,
+            forma_descarte, 
+            tipo_entrega
+        })
+
+        //RETORNA UMA MENSAGEM DE SUCESSO
+        return res.status(200).json({ message: 'Resíduo cadastrado com sucesso:', residuo: newResiduo })
+    } 
+    
+    catch (error) {
+        //RETORNA UMA MENSAGEM DE ERRO
+        return res.status(500).json({ message: 'Erro ao cadastrar novo resíduo:', error: error.message })
     }
 })
 
