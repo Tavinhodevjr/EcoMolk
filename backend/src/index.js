@@ -131,6 +131,33 @@ app.post('/residuos', verificaLogin, async (req, res) =>{
     }
 })
 
+//ROTA PARA EXIBIR OS RESÍDUOS (COM USUÁRIO LOGADO)
+app.get('/seusResiduos', verificaLogin, async (req, res) => {
+
+    try {
+        //PORCURA PELO ID DO USUÁRIO NA TABELA RESIDUOS
+        const residuos = await Residuos.findAll({
+            where: {
+                id_usuario: req.session.userId
+            }
+        })
+
+        //VERIFICA SE O ID BATE NO BANCO DE DADOS
+        if(!residuos) {
+            return res.status(404).json({ message: 'Resíduos não encontrados.'})
+        }
+
+        //RETORNA OS RESÍDUOS DO USUÁRIO
+        return res.status(200).json({ message: 'Resíduos encontrados com sucesso:', residuos: residuos })
+    } 
+    
+    catch (error) {
+        //RETORNA UMA MENSAGEM DE ERRO
+        return res.status(500).json({ message: 'Erro ao exibir seus resíduos', error: error.message })
+    }
+
+})
+
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');
 })
