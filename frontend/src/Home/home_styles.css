@@ -1,0 +1,61 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fdfdfd; 
+    font-size: 0.8rem;
+    background-image: url('fundo_home.png');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center 20%; 
+}
+
+@media (max-width: 1080px) {
+    body {
+        background-position: center 30%; 
+    }
+}
+
+@media (min-width: 1080px) {
+    body {
+        background-position: center 20%; 
+    }
+}
+
+/* Cabeçalho */
+.navbar {
+    background-color: rgb(198, 211, 211);
+    font-size: 1.2rem;
+    margin-bottom: 50px; 
+}
+
+/* Cor dos links de navegação */
+.nav-link {
+    font-weight: 600;
+    margin-right: 150px; 
+    color: rgba(27, 74, 120); 
+}
+
+/* Cor dos links ao passar o mouse */
+.nav-link:hover {
+    color: #000000; 
+}
+
+/* Títulos */
+h1 {
+    color: rgba(27, 74, 120); 
+    font-size: 3rem; 
+    margin-top: 100px; 
+    margin-bottom: 40px; 
+}
+
+.tagline {
+    color: rgba(27, 74, 120); 
+    font-size: 1.5rem; 
+    margin-top: 50px; 
+    margin-bottom: 40px; 
+}
+
+/* Estilo do main */
+main {
+    text-align: center; 
+    margin-top: 150px; 
+}
