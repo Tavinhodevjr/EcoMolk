@@ -143,7 +143,7 @@ app.get('/seusResiduos', verificaLogin, async (req, res) => {
         })
 
         //VERIFICA SE O ID BATE NO BANCO DE DADOS
-        if(!residuos) {
+        if(residuos.length === 0) {
             return res.status(404).json({ message: 'Resíduos não encontrados.'})
         }
 
