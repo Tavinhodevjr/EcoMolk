@@ -4,7 +4,8 @@ const cors = require('cors');
 const sequelize = require('./src/config/database.js');
 const Users = require('./src/models/users');
 const Residuos = require('./src/models/residuos');
-const session = require('express-session')
+const session = require('express-session');
+const verificaLogin = require('./src/middleware/index.js');
 
 const app = express();
 app.use(express.json());
@@ -35,20 +36,6 @@ async function conn() {
 
 }
 conn();
-
-//MIDDLEWARE PARA VERIFICAR SE O USUÁRIO ESTÁ LOGADO
-function verificaLogin(req, res, next) {
-    
-    //VERIFICA SE O ID DO USUÁRIO ESTA SALVO NA SESSÃO
-    if(req.session.userId) {
-        return next()
-    }
-
-    else{
-        //RETORNA UMA MENSAGEM DE ERRO
-        return res.status(401).json({ message: 'Acesso negado. Faça login para continuar.' })
-    }
-}
 
 //ROTA PARA CADASTRO DE USUÁRIOS
 app.post('/cadastrar', async (req, res) => { 
