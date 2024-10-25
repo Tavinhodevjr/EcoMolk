@@ -20,36 +20,13 @@
     color: #000000; /* Cor ao passar o mouse */
 }
 
-/* Cards */
-.card-custom {
-    background-color: #7DB09C; /* Cor semelhante à imagem */
-    border-radius: 10px;
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 20px;
-}
-.card-img {
-    max-width: 150px;
-    border-radius: 5px;
-    margin-right: 20px;
-}
-.card-content {
-    display: flex;
-    flex-direction: column;
-}
-.card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-.card-description {
-    font-size: 1rem;
-    margin-top: 10px;
+.card {
+    margin: 10px;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .card-residuo {
+    .card {
         flex-direction: column;
         align-items: flex-start;
     }
