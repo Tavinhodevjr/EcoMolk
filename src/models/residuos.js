@@ -43,6 +43,11 @@ Residuos.init({
     tipo_entrega: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+
+    imagem_residuo: {
+        type: DataTypes.BLOB,
+        allowNull: true
     }
 
 }, {
