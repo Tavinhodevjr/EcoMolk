@@ -6,8 +6,14 @@ const Users = require('./src/models/users');
 const Residuos = require('./src/models/residuos');
 const session = require('express-session');
 const verificaLogin = require('./src/middleware/index.js');
+const path = require('path');
+
 
 const app = express();
+// Servir arquivos estáticos como CSS, imagens e scripts
+app.use(express.static(__dirname + '/src/views'));
+app.use('/src/views', express.static(path.join(__dirname, 'src', 'views')));
+
 app.use(express.json());
 app.use(bodyParser.text());
 app.use(bodyParser.json());
@@ -91,6 +97,14 @@ app.post('/login', async (req, res) => {              //     **ADICIONAR RETURN 
     }
 })
 
+
+
+// Rota GET para exibir a página de login
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + '/src/views/Login/login_index.html');
+});
+
+
 //ROTA PARA CADASTRO DE RESIDUOS (COM USUÁRIO LOGADO)
 app.post('/residuos', verificaLogin, async (req, res) =>{
 
@@ -118,8 +132,13 @@ app.post('/residuos', verificaLogin, async (req, res) =>{
     }
 })
 
+// Rota para exibir a página de "Seus Resíduos"
+app.get('/seusResiduosPage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'SeusResiduos', 'SeusResiduos_index.html'));
+});
+
 //ROTA PARA EXIBIR OS RESÍDUOS (COM USUÁRIO LOGADO)
-app.get('/seusResiduos', verificaLogin, async (req, res) => {
+app.get('/api/seusResiduos', verificaLogin, async (req, res) => {
 
     try {
         //PORCURA PELO ID DO USUÁRIO NA TABELA RESIDUOS
@@ -144,6 +163,7 @@ app.get('/seusResiduos', verificaLogin, async (req, res) => {
     }
 
 })
+
 
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');

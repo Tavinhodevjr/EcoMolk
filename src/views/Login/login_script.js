@@ -27,7 +27,7 @@ document.querySelector('.submit').addEventListener('click', async (event) => {
             alert(data.message); // Exibe a mensagem de sucesso
             
             // Redireciona o usuário para a página desejada
-            window.location.href = 'src\views\QueroConectar\conectar_index.html'; // Exemplo de redirecionamento para a página 'home'
+            window.location.href = 'http://localhost:3000/seusResiduosPage'; // Exemplo de redirecionamento para a página 'home'
         } else {
             alert(data.message); // Exibe a mensagem de erro
         }
