@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quero me conectar</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="conectar_style.css"> 
+    <link rel="stylesheet" href="conectar_style.css">
 </head>
-<body>
-    
-    <div class="ecomolk">
-        <h2>ECOMOLK</h2>
-    </div>
 
+<body>
     <div class="form-container">
-        <div class="form-title">QUERO ME CONECTAR</div>
+        <h4 class="form-title">QUERO ME CONECTAR</h4>
         <form id="registerForm">
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
@@ -34,13 +31,7 @@
 
             <div class="mb-3">
                 <label for="residuo" class="form-label">O que sua empresa faz com os resíduos?</label>
-                <select id="residuo" class="form-control small" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option>Recicla</option>
-                    <option>Descarte Sustentável</option>
-                    <option>Outros</option>
-                    <option>Não sei</option>
-                </select>
+                <input type="text" id="residuo" class="form-control" required placeholder="Descreva aqui...">
             </div>
 
             <div class="mb-3">
@@ -53,11 +44,14 @@
                 <input type="tel" id="telefone" class="form-control" required>
             </div>
 
-            <button type="submit" class="btn submit-btn">ENVIAR</button>
+            <div class="mb-3 btn-container">
+                <button type="submit" class="btn submit-btn">ENVIAR</button>
+            </div>
         </form>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="conectar_script.js"></script>
-
 </body>
+
 </html>
