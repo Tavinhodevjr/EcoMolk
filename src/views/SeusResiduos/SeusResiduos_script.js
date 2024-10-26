@@ -20,7 +20,7 @@
         // Fetch para buscar os dados dos resíduos
         async function carregarResiduos() {
             try {
-                const response = await fetch('/api/seusResiduos');
+                const response = await fetch('http://localhost:3000/seusResiduos');
                 const data = await response.json();
 
                 if (response.ok) {

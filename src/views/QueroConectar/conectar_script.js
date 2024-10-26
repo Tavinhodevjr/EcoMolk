@@ -30,6 +30,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
         if (response.ok) {
             alert('Usuário cadastrado com sucesso!');
+
+            window.location.href = 'http://localhost:3000/login'
         } else {
             alert('Erro: ' + result.message);
         }
