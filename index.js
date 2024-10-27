@@ -185,7 +185,7 @@ app.get('/seusResiduos', verificaLogin, async (req, res) => {
 
 })
 
-app.listen(3000, () => {
+app.listen(3000, () =>{
     console.log('Servidor Funcionando');
 
     //FUNÇÃO APENAS PARA PRODUÇÃO
@@ -194,5 +194,4 @@ app.listen(3000, () => {
     //     open.default(url); 
     // }
     // abrirPagina('http://localhost:3000/landingPage')
-
 })
