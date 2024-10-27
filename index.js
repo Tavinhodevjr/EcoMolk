@@ -31,7 +31,7 @@ async function conn() {
         await sequelize.authenticate(); //TENTA FAZER A CONEXÃO COM O BANCO
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ force: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({ alter: true }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
@@ -75,6 +75,16 @@ app.get('/queroConectar', (req, res) => {
 //ROTA PARA SEUS PARCEIROS
 app.get('/seusParceiros', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'SeusParceiros', 'parceiros_index.html'))
+})
+
+//ROTA PARA DASHBOARD
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'Dashboard', 'dashboard_index.html'))
+})
+
+//ROTA PARA ENTREGAS
+app.get('/entregas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'Entregas', 'entregas_index.html'))
 })
 
 //ROTA PARA CADASTRO DE USUÁRIOS
