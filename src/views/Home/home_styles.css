@@ -1,18 +1,43 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: #f4f4f4;
 }
 
 header {
+    background-color: #007bff; /* Cor do cabeçalho */
+    color: white;
     text-align: center;
+    padding: 20px 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline; /* Efeito hover para os links */
 }
 
 #residuosContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    margin: 20px auto;
+    max-width: 1200px; /* Limite de largura para o contêiner */
 }
 
 .card {
@@ -22,13 +47,20 @@ header {
     padding: 15px;
     margin: 10px;
     width: 250px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s; /* Animação ao passar o mouse */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Efeito de levantar o card ao passar o mouse */
 }
 
 .card h2 {
-    font-size: 1.2em;
+    font-size: 1.5em;
+    color: #007bff; /* Cor do título do card */
 }
 
 .card p {
     margin: 5px 0;
+    color: #555; /* Cor do texto */
 }
