@@ -195,33 +195,31 @@ app.get('/seusResiduos', verificaLogin, async (req, res) => {
 
 })
 
-// ROTA PARA OBTER RESÍDUOS DE OUTROS USUÁRIOS SEM USAR Op
+// ROTA PARA OBTER RESÍDUOS DE OUTROS USUÁRIOS COM NOME DA EMPRESA
 app.get('/residuos/outsiders', verificaLogin, async (req, res) => {
     try {
-        const usuarioId = req.session.userId; // ID do usuário logado
+        const usuarioId = req.session.userId;
 
-        // Consulta bruta para pegar resíduos de outros usuários
-        const [residuos, metadata] = await sequelize.query(
-            `SELECT * FROM residuos WHERE id_usuario != :usuarioId`,
-            {
-                replacements: { usuarioId }, // Protege contra SQL Injection
-                type: sequelize.QueryTypes.SELECT
-            }
-        );
+        // Busca todos os resíduos e inclui o nome da empresa do usuário associado
+        const todosResiduos = await Residuos.findAll({
+            include: [{ model: Users, as: 'usuario', attributes: ['nome_empresa'] }]
+        });
 
-        console.log('Resíduos encontrados:', residuos); // Log dos resíduos encontrados
+        // Filtra para manter apenas resíduos de outros usuários
+        const residuosOutrosUsuarios = todosResiduos.filter(residuo => residuo.id_usuario !== usuarioId);
 
-        // Verifica se resíduos é definido antes de acessar a propriedade length
-        if (!residuos || residuos.length === 0) {
+        if (residuosOutrosUsuarios.length === 0) {
             return res.status(404).json({ message: 'Não há resíduos cadastrados de outros usuários.' });
         }
 
-        return res.status(200).json({ message: 'Resíduos de outros usuários encontrados com sucesso:', residuos });
+        return res.status(200).json({ message: 'Resíduos de outros usuários encontrados com sucesso:', residuos: residuosOutrosUsuarios });
     } catch (error) {
         console.error('Erro na rota /residuos/outsiders:', error);
         return res.status(500).json({ message: 'Erro ao exibir os resíduos de outros usuários', error: error.message });
     }
 });
+
+
 
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');
