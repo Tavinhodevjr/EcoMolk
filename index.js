@@ -8,12 +8,11 @@ const session = require('express-session');
 const verificaLogin = require('./src/middleware/index.js');
 const path = require('path');
 
-
 const app = express();
-// Servir arquivos estáticos como CSS, imagens e scripts
 app.use(express.static(__dirname + '/src/views'));
 app.use('/src/views', express.static(path.join(__dirname, 'src', 'views')));
-
+// app.use(express.static(__dirname + '/public'))
+// app.use('/public/images/IMGS', express.static(path.join(__dirname, 'public', 'images', 'IMGS')))
 app.use(express.json());
 app.use(bodyParser.text());
 app.use(bodyParser.json());
@@ -42,6 +41,35 @@ async function conn() {
 
 }
 conn();
+
+// Rota GET para exibir a página de login
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'Login', 'login_index.html'));
+});
+// Rota para exibir a página de "Seus Resíduos"
+app.get('/seusResiduosPage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'SeusResiduos', 'SeusResiduos_index.html'));
+});
+//ROTA PARA EXIBIR A PÁGINA ADD RESIDUOS
+app.get('/addResiduos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'AddResiduos', 'AddResiduos_index.html'))
+})
+//ROTA PARA EXIBIR A PÁGINA HOME
+app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'Home', 'home_index.html'))
+})
+//ROTA PARA A LANDING PAGE
+app.get('/landingPage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'LandingPage', 'LandingPage_index.html'))
+})
+//ROTA PARA O CADASTRO
+app.get('/queroConectar', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'QueroConectar', 'conectar_index.html'))
+})
+//ROTA PARA SEUS PARCEIROS
+app.get('/seusParceiros', (req, res) => {
+    res.sendFile(path.join(__dirname, 'src', 'views', 'SeusParceiros', 'parceiros_index.html'))
+})
 
 //ROTA PARA CADASTRO DE USUÁRIOS
 app.post('/cadastrar', async (req, res) => { 
@@ -97,14 +125,6 @@ app.post('/login', async (req, res) => {              //     **ADICIONAR RETURN 
     }
 })
 
-
-
-// Rota GET para exibir a página de login
-app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/src/views/Login/login_index.html');
-});
-
-
 //ROTA PARA CADASTRO DE RESIDUOS (COM USUÁRIO LOGADO)
 app.post('/residuos', verificaLogin, async (req, res) =>{
 
@@ -132,13 +152,8 @@ app.post('/residuos', verificaLogin, async (req, res) =>{
     }
 })
 
-// Rota para exibir a página de "Seus Resíduos"
-app.get('/seusResiduosPage', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src', 'views', 'SeusResiduos', 'SeusResiduos_index.html'));
-});
-
 //ROTA PARA EXIBIR OS RESÍDUOS (COM USUÁRIO LOGADO)
-app.get('/api/seusResiduos', verificaLogin, async (req, res) => {
+app.get('/seusResiduos', verificaLogin, async (req, res) => {
 
     try {
         //PORCURA PELO ID DO USUÁRIO NA TABELA RESIDUOS
@@ -164,7 +179,14 @@ app.get('/api/seusResiduos', verificaLogin, async (req, res) => {
 
 })
 
-
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');
+
+    //FUNÇÃO APENAS PARA PRODUÇÃO
+    // async function abrirPagina(url) {
+    //     const open = await import('open')
+    //     open.default(url); 
+    // }
+    // abrirPagina('http://localhost:3000/landingPage')
+    
 })
