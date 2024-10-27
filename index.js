@@ -46,26 +46,32 @@ conn();
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'Login', 'login_index.html'));
 });
+
 // Rota para exibir a página de "Seus Resíduos"
 app.get('/seusResiduosPage', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'SeusResiduos', 'SeusResiduos_index.html'));
 });
+
 //ROTA PARA EXIBIR A PÁGINA ADD RESIDUOS
 app.get('/addResiduos', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'AddResiduos', 'AddResiduos_index.html'))
 })
+
 //ROTA PARA EXIBIR A PÁGINA HOME
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'Home', 'home_index.html'))
 })
+
 //ROTA PARA A LANDING PAGE
 app.get('/landingPage', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'LandingPage', 'LandingPage_index.html'))
 })
+
 //ROTA PARA O CADASTRO
 app.get('/queroConectar', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'QueroConectar', 'conectar_index.html'))
 })
+
 //ROTA PARA SEUS PARCEIROS
 app.get('/seusParceiros', (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'SeusParceiros', 'parceiros_index.html'))
@@ -188,5 +194,4 @@ app.listen(3000, () =>{
     //     open.default(url); 
     // }
     // abrirPagina('http://localhost:3000/landingPage')
-    
 })
