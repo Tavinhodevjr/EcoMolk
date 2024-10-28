@@ -1,7 +1,14 @@
+/* POPPINS FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 /* Cabeçalho */
 .navbar {
     background-color: rgb(198, 211, 211);
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 10px;
 }
 
@@ -18,10 +25,74 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+}
+
+.search-container {
+    margin: 20px 0; /* Margem em cima e embaixo da barra de busca */
+}
+
+.search-input {
+    padding: 10px; /* Espaçamento interno */
+    border: 1px solid #ddd; /* Borda da barra */
+    border-radius: 20px; /* Cantos arredondados */
+    font-size: 1rem; /* Tamanho da fonte */
+    color: #555; /* Cor do texto */
+    background-color: #ffffff; /* Cor de fundo */
+    transition: border 0.2s; /* Transição suave para mudanças de estilo */
+}
+
+.search-input:focus {
+    outline: none; /* Remove o contorno padrão ao focar */
+    border: 1px solid rgba(27, 74, 120); /* Altera a cor da borda ao focar */
+    background-color: #fcfcfc; /* Altera a cor de fundo ao focar */
+}
+
+.btn {
+    background-color: rgba(27, 74, 120); /* Cor de fundo */
+    color: white; /* Cor do texto */
+    padding: 10px 20px; /* Tamanho do botão */
+    font-size: 1rem; /* Tamanho da fonte */
+    border: 2px solid rgba(27, 74, 120); /* Cor da borda */
+    border-radius: 20px; /* Cantos arredondados */
+    transition: background-color 0.3s, transform 0.2s; /* Transições suaves */
+}
+
+.btn img {
+    width: 20px; /* Ajusta a largura da imagem */
+    height: 20px; /* Ajusta a altura da imagem */
+}
+
+.btn .fas {
+    color: white; /* Ajusta a cor do ícone */
+    font-size: 20px; /* Ajusta o tamanho do ícone */
+}
+
+
+.btn:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    color: white; /* Cor do texto ao passar o mouse */
+    transform: scale(1.05); /* Aumenta ligeiramente o botão ao passar o mouse */
+}
+
+/* Estilo dos botões */
+.btn-conectar {
+    background-color: rgba(27, 74, 120); /* Cor do botão */
+    border: 2px solid rgba(27, 74, 120); /* Cor da borda */
+    color: white; /* Cor do texto */
+    font-size: 0.8rem; /* Tamanho menor */
+    padding: 0.4rem 0.8rem; /* Padding para reduzir o tamanho */
+}
+
+/* Alinhamento dos botões */
+.card-footer {
+    display: flex;
+    justify-content: center; /* Centraliza o botão */
+    margin-top: auto; /* Garante que o rodapé fique na parte inferior do card */
+    background-color: rgb(198, 211, 211); /* Cor de fundo padrão */
 }
 
 #residuosContainer {
@@ -34,26 +105,27 @@ body {
 
 /* Estilização dos cards */
 .card {
-    background: white;
-    border: 1px solid #ddd;
+    background-color: rgb(198, 211, 211);
+    border: 2px solid transparent; /* Borda transparente padrão */
     border-radius: 8px;
     padding: 15px;
     margin: 10px;
     width: 250px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s;
+    transition: transform 0.2s, border-color 0.2s; /* Adiciona transição para a borda */
 }
 
 .card:hover {
     transform: translateY(-5px);
+    border-color: #6795c7; /* Borda colorida ao passar o mouse */
 }
 
 .card h2 {
     font-size: 1.5em;
-    color: #007bff;
+    color: rgba(27, 74, 120);
 }
 
 .card p {
     margin: 5px 0;
-    color: #555;
+    color: #000000;
 }
