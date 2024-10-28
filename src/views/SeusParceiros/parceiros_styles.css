@@ -1,11 +1,10 @@
-body {
-    background-color: #f4f4f4;
-    font-family: 'Poppins', sans-serif;
-}
+/* POPPINS FONT */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* Cabeçalho */
 .navbar {
     background-color: rgb(198, 211, 211);
+    font-size: 1.2rem;
     padding: 10px;
 }
 
@@ -13,130 +12,26 @@ body {
 .nav-link {
     font-weight: 600;
     margin-right: 150px;
-    color: rgba(27,74,120); 
+    color: rgba(27, 74, 120); /* Cor padrão dos links */
 }
 
 /* Cor dos links ao passar o mouse */
 .nav-link:hover {
-    color: #000000; 
+    color: #000000; /* Cor ao passar o mouse */
 }
 
-/* Status Boxes */
-.status-box {
-    display: flex;
-    width: 80%;
-    align-items: center; 
-    padding: 20px; 
-    border-radius: 150px;
-    color: rgb(0, 0, 0);
-    margin-bottom: 2px; 
-    position: relative; 
-    height: 100%;
+.card {
+    margin: 10px;
 }
 
-.small {
-    margin-top: 6px; /* Espaçamento entre o título e o texto "Atualizado" */
-}
+/* Responsividade */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-.mb-0 {
-    margin-bottom: 0; 
-}
-
-/* Cores de fundo para status */
-.in-progress {
-    background: rgb(211, 214, 224); 
-}
-
-.awaiting-approval {
-    background: rgb(211, 214, 224); 
-}
-
-.delivered {
-    background: rgb(211, 214, 224); 
-}
-
-/* Botões de Status */
-.rounded-pill {
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-
-/* Chat Section */
-.chat-section {
-    background-color: #f9f9f9;
-    border-radius: 15px;
-    border: 1px solid #ddd;
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-/* Quantidade de itens */
-.p-3 {
-    padding: 0.0rem; 
-    font-size: 1.5rem; 
-}
-
-.col-md-4 {
-    max-width: 340px; 
-    width: 100%; 
-    height: 130px;
-}
-
-
-.chat-section p {
-    font-size: 1.4rem;
-    color: #888;
-}
-
-/* Partner Carousel */
-.partner-carousel .partner-company {
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.partner-carousel img {
-    width: 150px; 
-    height: 150px; 
-    border-radius: 50%;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    object-fit: cover; 
-    
-}
-
-.month-selector {
-    font-weight: bold;
-    font-size: 1.3rem;
-}
-
-/* Lista de Empresas */
-.col-4 {
-    padding: 20px; 
-    background-color: #f4f6f9; 
-    border-radius: 20px; 
-}
-
-/* Lista de Empresas */
-.list-group-item {
-    font-size: 1.3rem;
-    font-weight: 200;
-    margin-bottom: 15px; 
-    padding: 20px; 
-    border-radius: 30px;  
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
-    background-color: rgb(211, 214, 224); 
-}
-
-.right-column {
-    background-color: rgb(198, 211, 211) !important; /* Usando !important para garantir que o estilo seja aplicado */
-    color: #000000; 
-}
-  
-/* Estilizar as badges */
-.badge {
-    font-size: 0.9rem;
-    padding: 10px 15px;
-    border-radius: 50px; 
+    .card-img {
+        margin-bottom: 10px;
+    }
 }

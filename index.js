@@ -219,6 +219,33 @@ app.get('/residuos/outsiders', verificaLogin, async (req, res) => {
     }
 });
 
+// ROTA PARA OBTER USUÁRIOS EXCLUINDO O USUÁRIO LOGADO
+app.get('/usuarios/outsiders', verificaLogin, async (req, res) => {
+    try {
+        const usuarioId = req.session.userId;
+
+        // Busca todos os usuários incluindo os campos desejados
+        const todosUsuarios = await Users.findAll({
+            attributes: ['id', 'nome_empresa', 'nome', 'email', 'telefone'] // Incluindo os novos campos
+        });
+
+        // Filtra para manter apenas usuários que não são o logado
+        const usuariosOutros = todosUsuarios.filter(usuario => usuario.id !== usuarioId);
+
+        if (usuariosOutros.length === 0) {
+            return res.status(404).json({ message: 'Não há usuários cadastrados além do logado.' });
+        }
+
+        return res.status(200).json({ message: 'Usuários encontrados com sucesso:', usuarios: usuariosOutros });
+    } catch (error) {
+        console.error('Erro na rota /usuarios/outsiders:', error);
+        return res.status(500).json({ message: 'Erro ao exibir os usuários', error: error.message });
+    }
+});
+
+
+
+
 
 
 app.listen(3000, () =>{
