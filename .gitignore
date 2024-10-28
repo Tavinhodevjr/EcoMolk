@@ -40,7 +40,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-# Iginore o database.js para nao mudar mais a senha!!!
-src/config/database.js
-
