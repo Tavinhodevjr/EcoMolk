@@ -48,7 +48,15 @@ Residuos.init({
     imagem_residuo: {
         type: DataTypes.BLOB,
         allowNull: true
-    }
+    },
+
+    status_residuo: {
+        type: DataTypes.ENUM('disponivel', 'negociando', 'concluido', 'cancelado'),
+        defaultValue: 'disponivel',
+        allowNull: false
+    },
+
+    
 
 }, {
     sequelize,
