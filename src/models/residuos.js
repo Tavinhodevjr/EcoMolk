@@ -20,6 +20,16 @@ Residuos.init({
         }
     },
 
+    id_usuario_interessado: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: null,
+        references: {
+            model: Users,
+            key: Users.id
+        }
+    },
+
     tipo: {
         type: DataTypes.STRING,
         allowNull: false
@@ -54,17 +64,12 @@ Residuos.init({
         type: DataTypes.ENUM('disponivel', 'negociando', 'concluido', 'cancelado'),
         defaultValue: 'disponivel',
         allowNull: false
-    },
-
-    
+    }
 
 }, {
     sequelize,
     modelName: 'Residuos',
     tableName: 'residuos'
 })
-
-// Associação com o modelo Users
-Residuos.belongsTo(Users, { foreignKey: 'id_usuario', as: 'usuario' });
 
 module.exports = Residuos;
