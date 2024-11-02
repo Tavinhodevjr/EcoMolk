@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entregas</title>
+
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa7JwRey1BWibcn3ImOA8h2iY1o0pYGyQ&callback=initMap&libraries=maps,marker&v=beta"></script>
+    <script src="entregas_script.js"></script>
+
+    <link rel="stylesheet" href="entregas_style.css">
 </head>
 <body>
-    <p>TESTE ENTREGAS</p>
+    <gmp-map center="-23.469873428344727,-47.4297981262207" zoom="14" map-id="map">
+        <gmp-advanced-marker position="-23.469873428344727,-47.4297981262207" title="My location"></gmp-advanced-marker>
+    </gmp-map>
 </body>
 </html>
