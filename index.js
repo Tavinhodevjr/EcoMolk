@@ -201,8 +201,11 @@ app.get('/residuos/outsiders', verificaLogin, async (req, res) => {
     try {
         const usuarioId = req.session.userId;
 
-        // Busca todos os resíduos e inclui o nome da empresa do usuário associado
+        // Busca todos os resíduos "disponíveis" e inclui o nome da empresa do usuário associado
         const todosResiduos = await Residuos.findAll({
+            where: {
+                status_residuo: 'disponivel' // Adiciona a condição para status_residuo
+            },
             include: [{ model: Users, as: 'usuario', attributes: ['nome_empresa'] }]
         });
 
@@ -219,6 +222,7 @@ app.get('/residuos/outsiders', verificaLogin, async (req, res) => {
         return res.status(500).json({ message: 'Erro ao exibir os resíduos de outros usuários', error: error.message });
     }
 });
+
 
 // ROTA PARA OBTER USUÁRIOS EXCLUINDO O USUÁRIO LOGADO
 app.get('/usuarios/outsiders', verificaLogin, async (req, res) => {
@@ -275,6 +279,23 @@ app.post('/conectarResiduo', verificaLogin, async (req, res) => {
         return res.status(500).json({ message: 'Erro ao tentar se conectar ao resíduo', error: error.message })
     }
 })
+
+app.get('/usuarios/dados', verificaLogin, async (req, res) => {
+    try {
+        const usuarioLogado = await Users.findByPk(req.session.userId);
+        if (usuarioLogado) {
+            return res.json({ nome: usuarioLogado.nome, nome_empresa: usuarioLogado.nome_empresa });
+        } else {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Erro ao buscar dados do usuário', error: error.message });
+    }
+});
+
+
+
+
 
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');
