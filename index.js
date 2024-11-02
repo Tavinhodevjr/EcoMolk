@@ -7,6 +7,7 @@ const Residuos = require('./src/models/residuos');
 const session = require('express-session');
 const verificaLogin = require('./src/middleware/index.js');
 const path = require('path');
+const { where } = require('sequelize');
 
 const app = express();
 app.use(express.static(__dirname + '/src/views'));
@@ -31,7 +32,7 @@ async function conn() {
         await sequelize.authenticate(); //TENTA FAZER A CONEXÃO COM O BANCO
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ alter: true }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({ force: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
@@ -243,10 +244,37 @@ app.get('/usuarios/outsiders', verificaLogin, async (req, res) => {
     }
 });
 
+//ROTA PARA CONECTAR O USUARIO INTERESSADO EM UM RESIDUO DE OUTRO USUARIO
+app.post('/conectarResiduo', verificaLogin, async (req, res) => {
 
+    try {
+        //PEGA O ID O USUARIO LOGADO E O ID DO RESIDUO
+        const userId = req.session.userId
+        const { residuoId } = req.body
 
+        //ATUALIZA A TABELA RESIDUOS COM O ID DO USUARIO INTERESSADO
+        const [conectarResiduo] = await Residuos.update(
+            { 
+                id_usuario_interessado: userId,
+                status_residuo: 'negociando' 
+            },
+            { where: { id: residuoId } }
+        ) 
 
+        //VERIFICA SE O RESÍDUO EXISTE
+        if(conectarResiduo === 0) {
+            return res.status(404).json({ message: 'Resíduo não encontrado.' })
+        }
 
+        //MENSAGEM DE SUCESSO DO SISTEMA
+        return res.status(200).json({ message: 'Conexão com o resíduo realizada com sucesso.' })
+    } 
+    
+    catch (error) {
+        //MENSAGEM DE ERRO DO SISTEMA
+        return res.status(500).json({ message: 'Erro ao tentar se conectar ao resíduo', error: error.message })
+    }
+})
 
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');
