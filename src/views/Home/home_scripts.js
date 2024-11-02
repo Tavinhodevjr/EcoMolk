@@ -1,13 +1,20 @@
+// Função de logout
+function logout() {
+    window.location.href = '../Login/login_index.html';
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById('residuosContainer');
     let residuosData = [];
+    const nomeUsuarioElement = document.getElementById('nomeUsuario'); // Nome do usuário logado
+    const nomeEmpresaElement = document.getElementById('nomeEmpresa'); // Nome da empresa do usuário logado
 
     // Função para carregar os resíduos do servidor
     async function loadResiduos() {
         try {
             const response = await fetch('http://localhost:3000/residuos/outsiders', {
                 method: 'GET',
-                credentials: 'include'
+                credentials: 'include' // Inclui cookies de sessão
             });
 
             if (!response.ok) {
@@ -20,6 +27,38 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
             console.error(error);
             container.innerHTML = '<p>Ainda não há resíduos cadastrados!</p>';
+        }
+    }
+
+    // Função para carregar dados do usuário logado
+    async function loadUserData() {
+        try {
+            const response = await fetch('http://localhost:3000/usuarios/dados', {
+                method: 'GET',
+                credentials: 'include' // Inclui cookies de sessão
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao carregar dados do usuário: ' + response.statusText);
+            }
+
+            const data = await response.json();
+            // Atualiza os elementos com os dados do usuário logado
+            if (data && data.nome) {
+                nomeUsuarioElement.textContent = data.nome; // Exibe o nome do usuário
+            } else {
+                nomeUsuarioElement.textContent = 'Usuário Desconhecido'; // Valor padrão em caso de erro
+            }
+
+            if (data && data.nome_empresa) {
+                nomeEmpresaElement.textContent = data.nome_empresa; // Exibe o nome da empresa
+            } else {
+                nomeEmpresaElement.textContent = 'Empresa Desconhecida'; // Valor padrão em caso de erro
+            }
+        } catch (error) {
+            console.error(error);
+            nomeUsuarioElement.textContent = 'Usuário Desconhecido'; // Valor padrão em caso de erro
+            nomeEmpresaElement.textContent = 'Empresa Desconhecida'; // Valor padrão em caso de erro
         }
     }
 
@@ -54,16 +93,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const filteredResiduos = residuosData.filter(residuo =>
             residuo.tipo.toLowerCase().includes(searchTerm) || 
-            residuo.descricao.toLowerCase().includes(searchTerm
-        ));
+            residuo.descricao.toLowerCase().includes(searchTerm)
+        );
         displayResiduos(filteredResiduos); // Exibe os resíduos filtrados
     };
 
     // Função para conectar ao resíduo
     window.connect = function(residuoId) {
         alert(`Conectando ao resíduo com ID: ${residuoId}`);
+        // Aqui você pode implementar a lógica de conexão
     };
 
-    // Carregar os resíduos inicialmente
-    loadResiduos();
+    // Carregar os resíduos e dados do usuário inicialmente
+    await Promise.all([loadResiduos(), loadUserData()]);
+
+    // Adiciona o evento de clique no botão de logout
+    const logoutButton = document.getElementById('logoutButton'); // Supondo que você tenha um botão com esse ID
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logout);
+    }
 });

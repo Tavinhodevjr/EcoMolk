@@ -5,119 +5,127 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    overflow-x: hidden; /* Impede rolagem horizontal que afete a sidebar */
+}
+
 /* Cabeçalho */
 .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
     background-color: rgb(198, 211, 211);
     font-size: 1rem;
     padding: 10px;
+    z-index: 3; /* Aumenta o z-index para garantir que fique acima do botão de pesquisa */
 }
 
-/* Cor dos links de navegação */
 .nav-link {
     font-weight: 600;
-    margin-right: 150px;
-    color: rgba(27, 74, 120);
+    margin-right: 150px; /* Ajustado para melhor espaçamento */
 }
 
-/* Cor dos links ao passar o mouse */
 .nav-link:hover {
     color: #000000;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
+/* Botão de pesquisa fixo */
 .search-container {
-    margin: 20px 0; /* Margem em cima e embaixo da barra de busca */
+    position: fixed; /* Mantém posição fixa */
+    top: 60px; /* Alinha abaixo do cabeçalho */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Compensa a largura do elemento */
+    z-index: 2; /* Ajustado para ser menor que o cabeçalho */
+    margin: 20px 0; /* Distância vertical do cabeçalho */
+    display: flex; /* Ativa flexbox */
+    align-items: center; /* Alinha itens verticalmente no centro */
+    width: 100%; /* Faz a largura ocupar 100% */
 }
 
+/* Barra de pesquisa */
 .search-input {
-    padding: 10px; /* Espaçamento interno */
-    border: 1px solid #ddd; /* Borda da barra */
-    border-radius: 20px; /* Cantos arredondados */
-    font-size: 1rem; /* Tamanho da fonte */
-    color: #555; /* Cor do texto */
-    background-color: #ffffff; /* Cor de fundo */
-    transition: border 0.2s; /* Transição suave para mudanças de estilo */
+    width: 300px; /* Defina uma largura fixa para a barra de pesquisa */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 1rem;
+    color: #555;
+    background-color: #ffffff;
+    transition: border 0.2s;
 }
 
 .search-input:focus {
-    outline: none; /* Remove o contorno padrão ao focar */
-    border: 1px solid rgba(27, 74, 120); /* Altera a cor da borda ao focar */
-    background-color: #fcfcfc; /* Altera a cor de fundo ao focar */
+    outline: none;
+    border: 1px solid rgba(27, 74, 120);
+    background-color: #fcfcfc;
 }
 
+/* Botão de pesquisa */
 .btn {
-    background-color: rgba(27, 74, 120); /* Cor de fundo */
-    color: white; /* Cor do texto */
-    padding: 10px 20px; /* Tamanho do botão */
-    font-size: 1rem; /* Tamanho da fonte */
-    border: 2px solid rgba(27, 74, 120); /* Cor da borda */
-    border-radius: 20px; /* Cantos arredondados */
-    transition: background-color 0.3s, transform 0.2s; /* Transições suaves */
-}
-
-.btn img {
-    width: 20px; /* Ajusta a largura da imagem */
-    height: 20px; /* Ajusta a altura da imagem */
+    margin-left: 10px; /* Espaço entre a barra de pesquisa e o botão */
+    background-color: rgba(27, 74, 120);
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid rgba(27, 74, 120);
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn .fas {
-    color: white; /* Ajusta a cor do ícone */
-    font-size: 20px; /* Ajusta o tamanho do ícone */
+    color: white;
+    font-size: 20px;
 }
-
 
 .btn:hover {
-    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
-    color: white; /* Cor do texto ao passar o mouse */
-    transform: scale(1.05); /* Aumenta ligeiramente o botão ao passar o mouse */
+    background-color: #0056b3;
+    color: white;
+    transform: scale(1.05);
 }
 
-/* Estilo dos botões */
+/* Botões */
 .btn-conectar {
-    background-color: rgba(27, 74, 120); /* Cor do botão */
-    border: 2px solid rgba(27, 74, 120); /* Cor da borda */
-    color: white; /* Cor do texto */
-    font-size: 0.8rem; /* Tamanho menor */
-    padding: 0.4rem 0.8rem; /* Padding para reduzir o tamanho */
+    background-color: rgba(27, 74, 120);
+    border: 2px solid rgba(27, 74, 120);
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
 }
 
-/* Alinhamento dos botões */
 .card-footer {
     display: flex;
-    justify-content: center; /* Centraliza o botão */
-    margin-top: auto; /* Garante que o rodapé fique na parte inferior do card */
-    background-color: rgb(198, 211, 211); /* Cor de fundo padrão */
+    justify-content: center;
+    margin-top: auto;
+    background-color: rgb(198, 211, 211);
 }
 
+/* Estilo dos cards */
 #residuosContainer {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 20px auto;
-    max-width: 1200px;
+    justify-content: flex-start;
+    max-width: calc(100% - 270px); /* Ajusta a largura do container, descontando a largura da sidebar */
+    margin-left: 270px; /* Garante que o container dos cards fique ao lado da sidebar */
+    padding-top: 10px; /* Reduzido para diminuir a distância entre a barra de pesquisa e os cards */
 }
 
-/* Estilização dos cards */
 .card {
     background-color: rgb(198, 211, 211);
-    border: 2px solid transparent; /* Borda transparente padrão */
+    border: 2px solid transparent;
     border-radius: 8px;
     padding: 15px;
-    margin: 10px;
-    width: 250px;
+    margin: 40px; /* Distância entre os cards */
+    width: 250px; /* Largura dos cards */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, border-color 0.2s; /* Adiciona transição para a borda */
+    transition: transform 0.2s, border-color 0.2s;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: #6795c7; /* Borda colorida ao passar o mouse */
+    border-color: #6795c7;
 }
 
 .card h2 {
@@ -128,4 +136,68 @@ body {
 .card p {
     margin: 5px 0;
     color: #000000;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 60px; /* Define a posição logo abaixo do cabeçalho */
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 60px); /* Altura total abaixo do cabeçalho */
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Permite rolagem interna, caso o conteúdo ultrapasse a altura */
+    z-index: 1;
+}
+
+/* Conteúdo principal */
+.main-content {
+    margin-left: 270px; /* Espaço para a sidebar fixa */
+    padding: 20px;
+    padding-top: 150px; /* Ajuste conforme necessário para dar espaço ao cabeçalho e ao botão de pesquisa */
+    position: relative;
+}
+
+/* Consultas de mídia para responsividade */
+@media (max-width: 768px) {
+    .card {
+        width: 90%; /* Largura dos cards em telas menores */
+        margin: 20px auto; /* Centraliza e ajusta a margem */
+    }
+
+    #residuosContainer {
+        justify-content: center; /* Centraliza os cards no container */
+        margin-left: 0; /* Remove a margem esquerda na tela menor */
+        max-width: 100%; /* Ajusta a largura máxima */
+    }
+
+    .sidebar {
+        width: 100%; /* A sidebar ocupa a largura total em telas pequenas */
+        position: relative; /* Altera para posicionamento relativo */
+        height: auto; /* Ajusta a altura */
+    }
+
+    .main-content {
+        margin-left: 0; /* Remove a margem esquerda em telas pequenas */
+        padding-top: 10px; /* Ajusta o padding superior */
+    }
+
+    .search-container {
+        left: 50%; /* Centraliza novamente na tela menor */
+        transform: translateX(-50%); /* Compensa a largura do elemento */
+        width: 90%; /* Largura ajustada para ocupar 90% do viewport */
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-link {
+        margin-right: 20px; /* Ajusta o espaçamento dos links de navegação */
+        font-size: 0.9rem; /* Reduz o tamanho da fonte para dispositivos pequenos */
+    }
+
+    .navbar {
+        font-size: 0.9rem; /* Ajusta o tamanho da fonte do cabeçalho */
+    }
 }

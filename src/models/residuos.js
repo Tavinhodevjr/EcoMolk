@@ -72,4 +72,7 @@ Residuos.init({
     tableName: 'residuos'
 })
 
+// Associação com o modelo Users
+Residuos.belongsTo(Users, { foreignKey: 'id_usuario', as: 'usuario' });
+
 module.exports = Residuos;
