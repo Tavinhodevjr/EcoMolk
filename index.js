@@ -284,7 +284,9 @@ app.get('/usuarios/dados', verificaLogin, async (req, res) => {
     try {
         const usuarioLogado = await Users.findByPk(req.session.userId);
         if (usuarioLogado) {
-            return res.json({ nome: usuarioLogado.nome, nome_empresa: usuarioLogado.nome_empresa });
+            // Extrai apenas a primeira palavra do nome
+            const primeiroNome = usuarioLogado.nome.split(' ')[0];
+            return res.json({ nome: primeiroNome, nome_empresa: usuarioLogado.nome_empresa });
         } else {
             return res.status(404).json({ error: 'Usuário não encontrado' });
         }

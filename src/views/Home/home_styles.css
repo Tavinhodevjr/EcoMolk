@@ -117,8 +117,8 @@ body {
     border: 2px solid transparent;
     border-radius: 8px;
     padding: 15px;
-    margin: 40px; /* Distância entre os cards */
-    width: 250px; /* Largura dos cards */
+    margin: 20px; /* Distância entre os cards */
+    width: 300px; /* Largura dos cards */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, border-color 0.2s;
 }
@@ -129,13 +129,14 @@ body {
 }
 
 .card h2 {
-    font-size: 1.5em;
+    font-size: 1.1em;
     color: rgba(27, 74, 120);
 }
 
 .card p {
     margin: 5px 0;
     color: #000000;
+    font-size: 0.8em;
 }
 
 /* Sidebar */
@@ -150,7 +151,42 @@ body {
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Permite rolagem interna, caso o conteúdo ultrapasse a altura */
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
+/* Espaçamento entre as linhas na barra lateral */
+.sidebar p {
+    line-height: 1.5; /* Aumenta o espaçamento entre as linhas */
+    margin-bottom: 1px; /* Adiciona espaço entre os elementos */
+    margin: 1px 0; /* Reduzir a margem superior e inferior */
+
+}
+
+
+#logoutButton {
+    background-color: rgba(27, 74, 120); /* Cor de fundo igual ao botão de pesquisa */
+    color: white; /* Cor do texto */
+    padding: 10px 20px;
+    margin-top: auto;
+    font-size: 1rem;
+    border: 2px solid rgba(27, 74, 120); /* Borda igual ao botão de pesquisa */
+    border-radius: 20px; /* Bordas arredondadas */
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s; /* Animação */
+}
+
+#logoutButton:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse, igual ao botão de pesquisa */
+    color: white;
+    transform: scale(1.05);
+    border-color: #0056b3; /* Cor da borda ao passar o mouse */
+}
+
 
 /* Conteúdo principal */
 .main-content {
