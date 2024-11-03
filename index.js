@@ -8,6 +8,11 @@ const session = require('express-session');
 const verificaLogin = require('./src/middleware/index.js');
 const path = require('path');
 const { where } = require('sequelize');
+const multer = require('multer');
+
+// Configuração do multer para armazenar o arquivo em memória
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const app = express();
 app.use(express.static(__dirname + '/src/views'));
@@ -142,21 +147,23 @@ app.post('/login', async (req, res) => {              //     **ADICIONAR RETURN 
     }
 })
 
-//ROTA PARA CADASTRO DE RESIDUOS (COM USUÁRIO LOGADO)
-app.post('/residuos', verificaLogin, async (req, res) =>{
+//ROTA PARA CADASTRO DE RESIDUOS (COM USUÁRIO LOGADO E UPLOAD DE IMAGEM)
+app.post('/residuos', verificaLogin, upload.single('imagem-residuo'), async (req, res) =>{
 
     try {
         //SOLICITA OS DADOS NO CORPO DA REQUISIÇÃO
         const { tipo, descricao, quantidade, forma_descarte, tipo_entrega } = req.body
+        const imagemResiduo = req.file ? req.file.buffer : null; // Captura o buffer da imagem, se houver
 
-        //CADASTRANDO NOVO RESÍDUO COM ID DO USUÁRIO DA SESSÃO
+        //CADASTRANDO NOVO RESÍDUO COM ID DO USUÁRIO DA SESSÃO E A IMAGEM
         const newResiduo = await Residuos.create({
             id_usuario: req.session.userId,
             tipo, 
             descricao,
             quantidade,
             forma_descarte, 
-            tipo_entrega
+            tipo_entrega,
+            imagem_residuo: imagemResiduo // Salva a imagem como BLOB
         })
 
         //RETORNA UMA MENSAGEM DE SUCESSO

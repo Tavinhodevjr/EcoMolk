@@ -24,7 +24,7 @@
 
             <div class="form-container">
                 <h2>ADICIONE UM NOVO RESÍDUO</h2>
-                <form id="form-adicionar">
+                <form id="form-adicionar" action="/residuos" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="tipo-residuo" class="form-label">Tipo do Resíduo:</label>
                         <input type="text" class="form-control" id="tipo-residuo" name="tipo-residuo" required>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="imagem-residuo" class="form-label">Imagem do Resíduo:</label>
-                        <input type="file" class="form-control" id="imagem-residuo" name="imagem-residuo" accept="image/*">
+                        <input type="file" class="form-control" id="imagem-residuo" name="imagem-residuo" accept="image/*" required>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary circular-btn">ADICIONAR</button>

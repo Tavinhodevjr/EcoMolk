@@ -69,10 +69,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             card.className = 'card mb-3 p-3 d-flex flex-column align-items-center'; // Alinha o card em coluna e centraliza
 
             // Verifica se a imagem existe, caso contrário define uma imagem padrão
-            const imageUrl = residuo.imagem_residuo ? `data:image/jpeg;base64,${residuo.imagem_residuo}` : './sem_imagem_residuo.png';
+            const imageUrl = residuo.imagem_residuo ? `data:image/png;base64,${residuo.imagem_residuo}` : './sem_imagem_residuo.png';
 
             card.innerHTML = `
-                <img src="${imageUrl}" class="card-img-top" alt="Imagem do resíduo" style="width: 120px; height: 120px; object-fit: cover; margin-bottom: 10px;">
+                <img src="${imageUrl}" class="card-img-top" class="img-fluid rounded-start" alt="Imagem do resíduo" style="width: 120px; height: 120px; object-fit: cover; margin-bottom: 10px;">
                 <h2 class="text-center">${residuo.tipo}</h2> <!-- Centraliza o título -->
                 <p class="text-center"><strong>Empresa:</strong> ${residuo.usuario.nome_empresa}</p>
                 <p class="text-center"><strong>Descrição:</strong> ${residuo.descricao}</p>
