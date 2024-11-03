@@ -37,7 +37,7 @@ async function conn() {
         await sequelize.authenticate(); //TENTA FAZER A CONEXÃO COM O BANCO
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ force: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({ alter: true }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
@@ -478,13 +478,15 @@ app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
 
 
 
-app.listen(3000, () =>{
+app.listen(3000, () => {
     console.log('Servidor Funcionando');
 
-    //FUNÇÃO APENAS PARA PRODUÇÃO
-    // async function abrirPagina(url) {
-    //     const open = await import('open')
-    //     open.default(url); 
-    // }
-    // abrirPagina('http://localhost:3000/landingPage')
-})
+    // Função para abrir a página automaticamente no navegador
+    async function abrirPagina(url) {
+        const open = await import('open'); // Importa o módulo 'open' dinamicamente
+        open.default(url); // Abre o navegador na URL especificada
+    }
+
+    abrirPagina('http://localhost:3000/landingPage'); // Altere o caminho conforme necessário
+});
+
