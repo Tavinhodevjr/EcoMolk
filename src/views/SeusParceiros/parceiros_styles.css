@@ -3,46 +3,201 @@
 
 * {
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box; /* Adiciona box-sizing para melhor controle de layout */
 }
 
 body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    overflow-x: hidden; /* Impede rolagem horizontal que afete a sidebar */
+    overflow-x: hidden;
 }
 
 /* Cabeçalho */
 .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
     background-color: rgb(198, 211, 211);
     font-size: 1rem;
     padding: 10px;
+    z-index: 3;
 }
 
-/* Cor dos links de navegação */
 .nav-link {
     font-weight: 600;
     margin-right: 150px;
-    color: rgba(27, 74, 120);
 }
 
-/* Cor dos links ao passar o mouse */
 .nav-link:hover {
     color: #000000;
 }
 
-.card {
-    margin: 10px;
+/* Botão de pesquisa fixo */
+.search-container {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .card {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .card-img {
-        margin-bottom: 10px;
-    }
+/* Barra de pesquisa */
+.search-input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 1rem;
+    color: #555;
+    background-color: #ffffff;
+    transition: border 0.2s;
 }
+
+.search-input:focus {
+    outline: none;
+    border: 1px solid rgba(27, 74, 120);
+    background-color: #fcfcfc;
+}
+
+/* Botão de pesquisa */
+.btn {
+    margin-left: 10px;
+    background-color: rgba(27, 74, 120);
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid rgba(27, 74, 120);
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn .fas {
+    color: white;
+    font-size: 20px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    color: rgba(27, 74, 120);
+    transform: translateY(-2px);
+}
+
+/* Carrossel */
+.carousel-inner {
+    padding: 30px; /* Adiciona espaço em volta dos cards */
+}
+
+.carousel-inner .card {
+    height: 220px; /* Aumenta a altura dos cards */
+    width: 380px; /* Aumenta a largura dos cards */
+    margin: 0 10px; /* Mantém margens laterais para espaçamento */
+    background-color: rgb(198, 211, 211);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #6795c7;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    top: 0; /* Posiciona as setas diretamente acima dos cards */
+    transform: translateY(-50%); /* Centraliza verticalmente em relação ao carrossel */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(27, 74, 120);
+}
+
+.new-cards-container {
+    display: flex; /* Usamos flexbox para alinhar os cards */
+    flex-wrap: wrap; /* Permite que os cards se movam para a linha seguinte se não houver espaço */
+    justify-content: center; /* Centraliza os cards */
+    margin-top: 50px; /* Espaço acima dos novos cards */
+}
+
+.new-card {
+    height: 250px; /* Altura fixa dos novos cards */
+    width: 200px; /* Largura fixa dos novos cards */
+    margin: 10px; /* Espaçamento entre os cards */
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Espaçamento interno dos novos cards */
+    text-align: center; /* Centraliza o texto dentro dos cards */
+}
+
+.new-card h3 {
+    font-size: 1.2rem; /* Tamanho do título */
+    margin-bottom: 60px; /* Espaço abaixo do título */
+}
+
+.new-card p {
+    font-size: 1.4rem; /* Tamanho do texto */
+    color: #000000; /* Cor do texto */
+    font-weight: 600; /* Negrito se desejar */
+}
+
+.new-cards-title {
+    margin-left: 0px; /* Ajuste o valor conforme necessário */
+    font-size: 2rem; /* Tamanho do texto */
+    font-weight: 800; /* Negrito se desejar */
+    color: #333; /* Cor do texto */
+}
+
+#parceiros-cadastrados-card {
+    background-color: rgb(188, 189, 231);
+    color: #000000;
+    border: 2px solid #000000;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#residuos-disponiveis-card {
+    background-color: #e8f5e9;
+    color: #000000;
+    border: 2px solid #43a047;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#residuos-negociacao-card {
+    background-color: #fffde7;
+    color: #000000;
+    border: 2px solid #fdd835;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#residuos-concluidos-card {
+    background-color: #e1bee7;
+    color: #000000;
+    border: 2px solid #8e24aa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#residuos-cancelados-card {
+    background-color: #ffebee;
+    color: #000000;
+    border: 2px solid #e53935;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.new-card:hover {
+    transform: scale(1.05); /* Aumenta levemente o card ao passar o mouse */
+    transition: transform 0.8s ease;
+}
+

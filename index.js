@@ -302,6 +302,178 @@ app.get('/usuarios/dados', verificaLogin, async (req, res) => {
     }
 });
 
+// ROTA PARA OBTER O TOTAL DE PARCEIROS CADASTRADOS, EXCLUINDO O USUÁRIO ATUAL
+app.get('/parceiros/total', verificaLogin, async (req, res) => {
+    try {
+        const usuarioId = req.session.userId;
+
+        // Conta o total de usuários cadastrados
+        const totalParceiros = await Users.count();
+
+        // Subtrai 1 se houver pelo menos um parceiro e o usuário atual não for o único cadastrado
+        const totalExcluindoAtual = totalParceiros > 0 ? totalParceiros - 1 : 0;
+
+        return res.status(200).json({ message: 'Total de parceiros cadastrados com sucesso:', total: totalExcluindoAtual });
+    } catch (error) {
+        console.error('Erro na rota /parceiros/total:', error);
+        return res.status(500).json({ message: 'Erro ao exibir o total de parceiros cadastrados', error: error.message });
+    }
+});
+
+// Rota para buscar o número de resíduos disponíveis, excluindo o usuário ativo
+app.get('/disponiveis/count', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+
+        // Contando resíduos com status "disponível" e excluindo os do usuário ativo
+        const countDisponiveis = await Residuos.count({
+            where: {
+                status_residuo: 'disponivel',
+                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
+            }
+        });
+
+        // Contando todos os resíduos disponíveis
+        const totalDisponiveis = await Residuos.count({
+            where: {
+                status_residuo: 'disponivel'
+            }
+        });
+
+        // Calculando o total excluindo o usuário ativo
+        const totalExcluindoAtual = totalDisponiveis - countDisponiveis;
+
+        // Retornando apenas a contagem
+        res.json({ quantidade: totalExcluindoAtual });
+    } catch (error) {
+        console.error("Erro ao contar resíduos disponíveis:", error);
+        res.status(500).json({ message: 'Erro ao contar resíduos disponíveis' });
+    }
+});
+
+// Rota para buscar o número de resíduos em status "negociando", excluindo o usuário ativo
+app.get('/negociando/count', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+
+        // Contando resíduos com status "negociando" e excluindo os do usuário ativo
+        const countNegociando = await Residuos.count({
+            where: {
+                status_residuo: 'negociando',
+                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
+            }
+        });
+
+        // Contando todos os resíduos em status "negociando"
+        const totalNegociando = await Residuos.count({
+            where: {
+                status_residuo: 'negociando'
+            }
+        });
+
+        // Calculando o total excluindo o usuário ativo
+        const totalExcluindoAtual = totalNegociando - countNegociando;
+
+        // Retornando apenas a contagem
+        res.json({ quantidade: totalExcluindoAtual });
+    } catch (error) {
+        console.error("Erro ao contar resíduos em negociação:", error);
+        res.status(500).json({ message: 'Erro ao contar resíduos em negociação' });
+    }
+});
+
+// Rota para buscar o número de resíduos em status "concluido", excluindo o usuário ativo
+app.get('/concluido/count', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+
+        // Contando resíduos com status "concluido" e excluindo os do usuário ativo
+        const countConcluido = await Residuos.count({
+            where: {
+                status_residuo: 'concluido',
+                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
+            }
+        });
+
+        // Contando todos os resíduos em status "concluido"
+        const totalConcluido = await Residuos.count({
+            where: {
+                status_residuo: 'concluido'
+            }
+        });
+
+        // Calculando o total excluindo o usuário ativo
+        const totalExcluindoAtual = totalConcluido - countConcluido;
+
+        // Retornando apenas a contagem
+        res.json({ quantidade: totalExcluindoAtual });
+    } catch (error) {
+        console.error("Erro ao contar resíduos concluídos:", error);
+        res.status(500).json({ message: 'Erro ao contar resíduos concluídos' });
+    }
+});
+
+// Rota para buscar o número de resíduos em status "cancelado", excluindo o usuário ativo
+app.get('/cancelado/count', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+
+        // Contando resíduos com status "cancelado" e excluindo os do usuário ativo
+        const countCancelado = await Residuos.count({
+            where: {
+                status_residuo: 'cancelado',
+                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
+            }
+        });
+
+        // Contando todos os resíduos em status "cancelado"
+        const totalCancelado = await Residuos.count({
+            where: {
+                status_residuo: 'cancelado'
+            }
+        });
+
+        // Calculando o total excluindo o usuário ativo
+        const totalExcluindoAtual = totalCancelado - countCancelado;
+
+        // Retornando apenas a contagem
+        res.json({ quantidade: totalExcluindoAtual });
+    } catch (error) {
+        console.error("Erro ao contar resíduos cancelados:", error);
+        res.status(500).json({ message: 'Erro ao contar resíduos cancelados' });
+    }
+});
+
+// ROTA PARA ATUALIZAR O STATUS DO RESÍDUO
+app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
+    const { id } = req.params; // ID do resíduo
+    const { novoStatus } = req.body; // O novo status enviado pelo cliente
+
+    try {
+        // Verifica se o resíduo existe antes de tentar atualizar
+        const residuo = await Residuos.findByPk(id);
+        if (!residuo) {
+            return res.status(404).json({ message: 'Resíduo não encontrado.' });
+        }
+
+        // Atualiza o status do resíduo
+        const resultado = await Residuos.update(
+            { status_residuo: novoStatus }, // Certifique-se de usar o nome correto do campo
+            { where: { id: id } }
+        );
+
+        // Verifica se a atualização foi bem-sucedida
+        if (resultado[0] === 0) {
+            return res.status(404).json({ message: 'Resíduo não encontrado ou status não atualizado.' });
+        }
+
+        return res.status(200).json({ message: 'Status atualizado com sucesso.' });
+    } catch (error) {
+        console.error('Erro ao atualizar status:', error); // Log de erro para depuração
+        return res.status(500).json({ message: 'Erro ao atualizar status', error: error.message });
+    }
+});
+
 
 
 
