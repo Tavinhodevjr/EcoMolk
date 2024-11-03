@@ -1,11 +1,34 @@
+<!-- dashboard_index.html -->
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard_style.css">
+    <title>Dashboard - EcoMolk</title>
 </head>
 <body>
-    <p>TESTE DASHBOARD</p>
+    <h1>Dashboard EcoMolk</h1>
+
+    <!-- Exemplo de filtro de categoria -->
+    <label for="categoryFilter">Filtrar por Categoria:</label>
+    <select id="categoryFilter">
+        <option value="">Todas</option>
+        <option value="categoria1">Categoria 1</option>
+        <option value="categoria2">Categoria 2</option>
+        <!-- Adicione mais opções conforme necessário -->
+    </select>
+
+    <div class="dashboard-container">
+        <iframe 
+            id="dashboard-iframe"
+            width="100%" 
+            height="600" 
+            src="https://app.powerbi.com/view?r=eyJrIjoiYzJkMGQzMTMtZWUyYy00ZTgxLWE1ZGEtNWRkYjFlZDA1ZDMzIiwidCI6IjU5ZDRmMjQ5LTA1MjAtNDZjZi1iNmIyLTg3M2Q1ZGE1NDNmZSJ9&pageName=a52c942c738a9c39e304 
+            frameborder="0" 
+            allowFullScreen="true"></iframe>
+    </div>
+    
+    <script src="dashboard_script.js"></script>
 </body>
 </html>
