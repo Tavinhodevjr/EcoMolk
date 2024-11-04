@@ -22,6 +22,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const data = await response.json();
+
+            // Processa os resíduos para converter a imagem em base64
+            const residuos = data.residuos.map(residuo => {
+                if (residuo.imagem_residuo) {
+                    residuo.imagem_residuo = btoa(String.fromCharCode(...new Uint8Array(residuo.imagem_residuo.data)));
+                }
+                return residuo;
+            });
+
             residuosData = data.residuos; // Armazena os resíduos para pesquisa
             displayResiduos(residuosData); // Exibe os resíduos carregados
         } catch (error) {
@@ -71,8 +80,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Verifica se a imagem existe, caso contrário define uma imagem padrão
             const imageUrl = residuo.imagem_residuo ? `data:image/png;base64,${residuo.imagem_residuo}` : './sem_imagem_residuo.png';
 
+
             card.innerHTML = `
-                <img src="${imageUrl}" class="card-img-top" class="img-fluid rounded-start" alt="Imagem do resíduo" style="width: 120px; height: 120px; object-fit: cover; margin-bottom: 10px;">
+                <img src="${imageUrl}" class="card-img-top img-fluid rounded-start" alt="Imagem do resíduo" style="width: 120px; height: 120px; object-fit: cover; margin-bottom: 10px;">
                 <h2 class="text-center">${residuo.tipo}</h2> <!-- Centraliza o título -->
                 <p class="text-center"><strong>Empresa:</strong> ${residuo.usuario.nome_empresa}</p>
                 <p class="text-center"><strong>Descrição:</strong> ${residuo.descricao}</p>

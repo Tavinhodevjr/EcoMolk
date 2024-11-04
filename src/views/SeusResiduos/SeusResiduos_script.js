@@ -6,6 +6,15 @@ async function carregarResiduos() {
         const data = await response.json();
 
         if (response.ok) {
+
+            // Processa os resíduos para converter a imagem em base64
+            residuos = data.residuos.map(residuo => {
+                if (residuo.imagem_residuo) {
+                    residuo.imagem_residuo = btoa(String.fromCharCode(...new Uint8Array(residuo.imagem_residuo.data)));
+                }
+                return residuo;
+            });
+
             residuos = data.residuos; // Armazena os resíduos recebidos
             displayCarousel(residuos); // Mostra os resíduos no carrossel
         } else {
@@ -114,11 +123,18 @@ async function atualizarStatus(residuoId) {
             body: JSON.stringify({ novoStatus })
         });
         
-        const data = await response.json();
+        // Verifique se a resposta não é ok
+        if (!response.ok) {
+            const errorMessage = await response.text(); // Captura a resposta como texto
+            throw new Error(`Erro ${response.status}: ${errorMessage}`); // Lança um erro com a resposta
+        }
+
+        const data = await response.json(); // Tenta parsear como JSON
         alert(data.message); // Mensagem de sucesso ou erro
         carregarResiduos(); // Recarrega os resíduos para atualizar a lista
     } catch (error) {
         console.error('Erro ao atualizar status:', error);
+        alert('Erro ao atualizar status: ' + error.message);
     }
 }
 

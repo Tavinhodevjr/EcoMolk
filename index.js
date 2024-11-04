@@ -9,6 +9,8 @@ const verificaLogin = require('./src/middleware/index.js');
 const path = require('path');
 const { where } = require('sequelize');
 const multer = require('multer');
+const { Residuo } = require('./src/models/residuos'); 
+
 
 // Configuração do multer para armazenar o arquivo em memória
 const storage = multer.memoryStorage();
@@ -37,7 +39,7 @@ async function conn() {
         await sequelize.authenticate(); //TENTA FAZER A CONEXÃO COM O BANCO
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ alter: true }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({ force: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
@@ -164,6 +166,7 @@ app.post('/residuos', verificaLogin, upload.single('imagem-residuo'), async (req
             forma_descarte, 
             tipo_entrega,
             imagem_residuo: imagemResiduo // Salva a imagem como BLOB
+            //O tipo LONGBLOB pode armazenar até 4 GB de dados, enquanto MEDIUMBLOB pode armazenar até 16 MB, e BLOB armazena até 64 KB.
         })
 
         //RETORNA UMA MENSAGEM DE SUCESSO
@@ -171,8 +174,8 @@ app.post('/residuos', verificaLogin, upload.single('imagem-residuo'), async (req
     } 
     
     catch (error) {
-        //RETORNA UMA MENSAGEM DE ERRO
-        return res.status(500).json({ message: 'Erro ao cadastrar novo resíduo:', error: error.message })
+        console.error('Erro ao cadastrar resíduo:', error); // Log completo do erro
+        return res.status(500).json({ message: 'Erro ao cadastrar novo resíduo:', error: error.message });
     }
 })
 
@@ -192,6 +195,7 @@ app.get('/seusResiduos', verificaLogin, async (req, res) => {
             return res.status(404).json({ message: 'Resíduos não encontrados.'})
         }
 
+        
         //RETORNA OS RESÍDUOS DO USUÁRIO
         return res.status(200).json({ message: 'Resíduos encontrados com sucesso:', residuos: residuos })
     } 
@@ -218,7 +222,7 @@ app.get('/residuos/outsiders', verificaLogin, async (req, res) => {
 
         // Filtra para manter apenas resíduos de outros usuários
         const residuosOutrosUsuarios = todosResiduos.filter(residuo => residuo.id_usuario !== usuarioId);
-
+        
         if (residuosOutrosUsuarios.length === 0) {
             return res.status(404).json({ message: 'Não há resíduos cadastrados de outros usuários.' });
         }
@@ -287,6 +291,33 @@ app.post('/conectarResiduo', verificaLogin, async (req, res) => {
     }
 })
 
+// Endpoint para atualizar status
+app.put('/atualizarStatus/:id', async (req, res) => {
+    const { id } = req.params; // ID do resíduo
+    const { novoStatus } = req.body; // Novo status que está sendo enviado
+
+    try {
+        // Verifica se o status é válido
+        if (!['disponivel', 'negociando', 'concluido', 'cancelado'].includes(novoStatus)) {
+            return res.status(400).json({ message: 'Status inválido' });
+        }
+
+        // Atualiza o status no banco de dados
+        const [updated] = await Residuos.update(
+            { status_residuo: novoStatus },
+            { where: { id } }
+        );
+
+        if (updated) {
+            return res.status(200).json({ message: 'Status atualizado com sucesso' });
+        }
+        throw new Error('Resíduo não encontrado');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao atualizar status' });
+    }
+});
+
 app.get('/usuarios/dados', verificaLogin, async (req, res) => {
     try {
         const usuarioLogado = await Users.findByPk(req.session.userId);
@@ -302,191 +333,13 @@ app.get('/usuarios/dados', verificaLogin, async (req, res) => {
     }
 });
 
-// ROTA PARA OBTER O TOTAL DE PARCEIROS CADASTRADOS, EXCLUINDO O USUÁRIO ATUAL
-app.get('/parceiros/total', verificaLogin, async (req, res) => {
-    try {
-        const usuarioId = req.session.userId;
-
-        // Conta o total de usuários cadastrados
-        const totalParceiros = await Users.count();
-
-        // Subtrai 1 se houver pelo menos um parceiro e o usuário atual não for o único cadastrado
-        const totalExcluindoAtual = totalParceiros > 0 ? totalParceiros - 1 : 0;
-
-        return res.status(200).json({ message: 'Total de parceiros cadastrados com sucesso:', total: totalExcluindoAtual });
-    } catch (error) {
-        console.error('Erro na rota /parceiros/total:', error);
-        return res.status(500).json({ message: 'Erro ao exibir o total de parceiros cadastrados', error: error.message });
-    }
-});
-
-// Rota para buscar o número de resíduos disponíveis, excluindo o usuário ativo
-app.get('/disponiveis/count', verificaLogin, async (req, res) => {
-    try {
-        const userId = req.session.userId;
-
-        // Contando resíduos com status "disponível" e excluindo os do usuário ativo
-        const countDisponiveis = await Residuos.count({
-            where: {
-                status_residuo: 'disponivel',
-                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
-            }
-        });
-
-        // Contando todos os resíduos disponíveis
-        const totalDisponiveis = await Residuos.count({
-            where: {
-                status_residuo: 'disponivel'
-            }
-        });
-
-        // Calculando o total excluindo o usuário ativo
-        const totalExcluindoAtual = totalDisponiveis - countDisponiveis;
-
-        // Retornando apenas a contagem
-        res.json({ quantidade: totalExcluindoAtual });
-    } catch (error) {
-        console.error("Erro ao contar resíduos disponíveis:", error);
-        res.status(500).json({ message: 'Erro ao contar resíduos disponíveis' });
-    }
-});
-
-// Rota para buscar o número de resíduos em status "negociando", excluindo o usuário ativo
-app.get('/negociando/count', verificaLogin, async (req, res) => {
-    try {
-        const userId = req.session.userId;
-
-        // Contando resíduos com status "negociando" e excluindo os do usuário ativo
-        const countNegociando = await Residuos.count({
-            where: {
-                status_residuo: 'negociando',
-                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
-            }
-        });
-
-        // Contando todos os resíduos em status "negociando"
-        const totalNegociando = await Residuos.count({
-            where: {
-                status_residuo: 'negociando'
-            }
-        });
-
-        // Calculando o total excluindo o usuário ativo
-        const totalExcluindoAtual = totalNegociando - countNegociando;
-
-        // Retornando apenas a contagem
-        res.json({ quantidade: totalExcluindoAtual });
-    } catch (error) {
-        console.error("Erro ao contar resíduos em negociação:", error);
-        res.status(500).json({ message: 'Erro ao contar resíduos em negociação' });
-    }
-});
-
-// Rota para buscar o número de resíduos em status "concluido", excluindo o usuário ativo
-app.get('/concluido/count', verificaLogin, async (req, res) => {
-    try {
-        const userId = req.session.userId;
-
-        // Contando resíduos com status "concluido" e excluindo os do usuário ativo
-        const countConcluido = await Residuos.count({
-            where: {
-                status_residuo: 'concluido',
-                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
-            }
-        });
-
-        // Contando todos os resíduos em status "concluido"
-        const totalConcluido = await Residuos.count({
-            where: {
-                status_residuo: 'concluido'
-            }
-        });
-
-        // Calculando o total excluindo o usuário ativo
-        const totalExcluindoAtual = totalConcluido - countConcluido;
-
-        // Retornando apenas a contagem
-        res.json({ quantidade: totalExcluindoAtual });
-    } catch (error) {
-        console.error("Erro ao contar resíduos concluídos:", error);
-        res.status(500).json({ message: 'Erro ao contar resíduos concluídos' });
-    }
-});
-
-// Rota para buscar o número de resíduos em status "cancelado", excluindo o usuário ativo
-app.get('/cancelado/count', verificaLogin, async (req, res) => {
-    try {
-        const userId = req.session.userId;
-
-        // Contando resíduos com status "cancelado" e excluindo os do usuário ativo
-        const countCancelado = await Residuos.count({
-            where: {
-                status_residuo: 'cancelado',
-                id_usuario: userId // Usaremos uma função de contar fora para subtrair depois
-            }
-        });
-
-        // Contando todos os resíduos em status "cancelado"
-        const totalCancelado = await Residuos.count({
-            where: {
-                status_residuo: 'cancelado'
-            }
-        });
-
-        // Calculando o total excluindo o usuário ativo
-        const totalExcluindoAtual = totalCancelado - countCancelado;
-
-        // Retornando apenas a contagem
-        res.json({ quantidade: totalExcluindoAtual });
-    } catch (error) {
-        console.error("Erro ao contar resíduos cancelados:", error);
-        res.status(500).json({ message: 'Erro ao contar resíduos cancelados' });
-    }
-});
-
-// ROTA PARA ATUALIZAR O STATUS DO RESÍDUO
-app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
-    const { id } = req.params; // ID do resíduo
-    const { novoStatus } = req.body; // O novo status enviado pelo cliente
-
-    try {
-        // Verifica se o resíduo existe antes de tentar atualizar
-        const residuo = await Residuos.findByPk(id);
-        if (!residuo) {
-            return res.status(404).json({ message: 'Resíduo não encontrado.' });
-        }
-
-        // Atualiza o status do resíduo
-        const resultado = await Residuos.update(
-            { status_residuo: novoStatus }, // Certifique-se de usar o nome correto do campo
-            { where: { id: id } }
-        );
-
-        // Verifica se a atualização foi bem-sucedida
-        if (resultado[0] === 0) {
-            return res.status(404).json({ message: 'Resíduo não encontrado ou status não atualizado.' });
-        }
-
-        return res.status(200).json({ message: 'Status atualizado com sucesso.' });
-    } catch (error) {
-        console.error('Erro ao atualizar status:', error); // Log de erro para depuração
-        return res.status(500).json({ message: 'Erro ao atualizar status', error: error.message });
-    }
-});
-
-
-
-
-
-app.listen(3000, () => {
+app.listen(3000, () =>{
     console.log('Servidor Funcionando');
 
-    // Função para abrir a página automaticamente no navegador
-    async function abrirPagina(url) {
-        const open = await import('open'); // Importa o módulo 'open' dinamicamente
-        open.default(url); // Abre o navegador na URL especificada
-    }
-
-    abrirPagina('http://localhost:3000/landingPage'); // Altere o caminho conforme necessário
-});
-
+    //FUNÇÃO APENAS PARA PRODUÇÃO
+    // async function abrirPagina(url) {
+    //     const open = await import('open')
+    //     open.default(url); 
+    // }
+    // abrirPagina('http://localhost:3000/landingPage')
+})
