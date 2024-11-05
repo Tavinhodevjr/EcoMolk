@@ -39,7 +39,7 @@ async function conn() {
         await sequelize.authenticate(); //TENTA FAZER A CONEXÃO COM O BANCO
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ force: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({ alter: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
@@ -267,11 +267,16 @@ app.post('/conectarResiduo', verificaLogin, async (req, res) => {
         const userId = req.session.userId
         const { residuoId } = req.body
 
-        //ATUALIZA A TABELA RESIDUOS COM O ID DO USUARIO INTERESSADO
+        //CALCULAR A DATA DE ENTREGA PARA 15 DIAS APÓS A CONEXÃO
+        const dataEntrega = new Date()
+        dataEntrega.setDate(dataEntrega.getDate() + 15)
+
+        //ATUALIZA A TABELA RESIDUOS COM O ID DO USUARIO INTERESSADO, COM A DATA DE ENTREGA E COM O NOVO STATUS
         const [conectarResiduo] = await Residuos.update(
             { 
                 id_usuario_interessado: userId,
-                status_residuo: 'negociando' 
+                status_residuo: 'negociando',
+                data_entrega: dataEntrega
             },
             { where: { id: residuoId } }
         ) 
@@ -292,7 +297,7 @@ app.post('/conectarResiduo', verificaLogin, async (req, res) => {
 })
 
 // Endpoint para atualizar status
-app.put('/atualizarStatus/:id', async (req, res) => {
+app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
     const { id } = req.params; // ID do resíduo
     const { novoStatus } = req.body; // Novo status que está sendo enviado
 

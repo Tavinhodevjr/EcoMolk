@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require('sequelize')
 const sequelize = require('../config/database')
-const Users = require('./users')
+const Users = require('./users');
+const { flush } = require('pm2');
 
 class Residuos extends Model {}
 
@@ -64,6 +65,11 @@ Residuos.init({
         type: DataTypes.ENUM('disponivel', 'negociando', 'concluido', 'cancelado'),
         defaultValue: 'disponivel',
         allowNull: false
+    },
+
+    data_entrega: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
     }
 
 }, {
