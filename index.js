@@ -10,7 +10,7 @@ const path = require('path');
 const { where } = require('sequelize');
 const multer = require('multer');
 const { Residuo } = require('./src/models/residuos'); 
-
+const { Op } = require('sequelize');
 
 // Configuração do multer para armazenar o arquivo em memória
 const storage = multer.memoryStorage();
@@ -509,6 +509,50 @@ app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
         return res.status(500).json({ message: 'Erro ao atualizar status', error: error.message });
     }
 });
+
+// Rota para pegar o nome da empresa do banco tela de entrega
+app.get('/empresa', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;  // Certifique-se de que a sessão está configurada corretamente
+
+        // Buscando o nome da empresa no banco
+        const user = await Users.findOne({ where: { id: userId } });
+
+        if (user && user.nome_empresa) {
+            return res.json({ nome_empresa: user.nome_empresa });
+        } else {
+            return res.status(404).json({ message: 'Empresa não encontrada' });
+        }
+    } catch (error) {
+        console.error('Erro ao buscar nome da empresa:', error);
+        return res.status(500).json({ message: 'Erro ao buscar nome da empresa' });
+    }
+});
+
+// Rota para Buscar Resíduos com Status "negociando" tela de entrega
+app.get('/entregas/negociando', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+
+        // Buscando resíduos com status "negociando" e exibindo os campos necessários
+        const entregasNegociando = await Residuos.findAll({
+            where: {
+                status_residuo: 'negociando',
+                [Op.or]: [
+                    { id_usuario: userId },
+                    { id_usuario_interessado: userId }
+                ]
+            },
+            attributes: ['tipo' ,'tipo_entrega', 'data_entrega'] // Inclua aqui os campos que você deseja retornar
+        });
+
+        res.json(entregasNegociando);
+    } catch (error) {
+        console.error("Erro ao buscar entregas negociando:", error);
+        res.status(500).json({ message: 'Erro ao buscar entregas' });
+    }
+});
+
 
 
 app.listen(3000, () =>{
