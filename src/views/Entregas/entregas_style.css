@@ -8,6 +8,11 @@ body {
   padding: 0;
 }
 
+/* AJUSTAR CSS PARA PODER APARECER A BARRA DE PESQUISA NA TELA */
+.place-picker-container {
+  padding: 20px;
+}
+
 gmp-map {
   height: 100%;
 }

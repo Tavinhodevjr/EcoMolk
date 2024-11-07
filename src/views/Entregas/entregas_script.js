@@ -1,14 +1,45 @@
-let map;
-
-async function initMap() {
-    // Aguardando a importação da biblioteca do Google Maps
-    const { Map } = await google.maps.importLibrary("maps");
-
-    map = new Map(document.getElementById("map"), {
-        center: { lat: -23.469873428344727, lng: -47.4297981262207 }, // Corrigindo a lat e lng
-        zoom: 8,
+// AJUSTAR PARA PEGAR AS INFORMAÇÕES DA LABEL DO ENDEREÇO
+async function init() {
+    await customElements.whenDefined('gmp-map');
+  
+    const map = document.querySelector('gmp-map');
+    const marker = document.querySelector('gmp-advanced-marker');
+    const placePicker = document.querySelector('gmpx-place-picker');
+    const infowindow = new google.maps.InfoWindow();
+  
+    map.innerMap.setOptions({
+      mapTypeControl: false
     });
-}
+  
+    placePicker.addEventListener('gmpx-placechange', () => {
+      const place = placePicker.value;
+  
+      if (!place.location) {
+        window.alert(
+          "No details available for input: '" + place.name + "'"
+        );
+        infowindow.close();
+        marker.position = null;
+        return;
+      }
+  
+      if (place.viewport) {
+        map.innerMap.fitBounds(place.viewport);
+      } else {
+        map.center = place.location;
+        map.zoom = 17;
+      }
+  
+      marker.position = place.location;
+      infowindow.setContent(
+        `<strong>${place.displayName}</strong><br>
+         <span>${place.formattedAddress}</span>
+      `);
+      infowindow.open(map.innerMap, marker);
+    });
+} 
+
+document.addEventListener('DOMContentLoaded', init);
 
 document.addEventListener('DOMContentLoaded', function() {
     // Carregar o nome da empresa após o carregamento do DOM
@@ -99,7 +130,7 @@ async function carregarEntregasNegociando() {
     carregarEntregasNegociando(); // Chama a função para carregar as entregas
 
     // Inicializando o mapa e carregando o nome da empresa
-    initMap(); // Inicializa o mapa após o carregamento do DOM
+    // initMap(); // Inicializa o mapa após o carregamento do DOM
     carregarNomeEmpresa(); // Carrega o nome da empresa após o carregamento do DOM
     console.log('DOM completamente carregado');
 });
