@@ -56,17 +56,17 @@ app.get('/login', (req, res) => {
 });
 
 // Rota para exibir a página de "Seus Resíduos"
-app.get('/seusResiduosPage', (req, res) => {
+app.get('/seusResiduosPage', verificaLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'SeusResiduos', 'SeusResiduos_index.html'));
 });
 
 //ROTA PARA EXIBIR A PÁGINA ADD RESIDUOS
-app.get('/addResiduos', (req, res) => {
+app.get('/addResiduos', verificaLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'AddResiduos', 'AddResiduos_index.html'))
 })
 
 //ROTA PARA EXIBIR A PÁGINA HOME
-app.get('/home', (req, res) => {
+app.get('/home', verificaLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'Home', 'home_index.html'))
 })
 
@@ -81,17 +81,17 @@ app.get('/queroConectar', (req, res) => {
 })
 
 //ROTA PARA SEUS PARCEIROS
-app.get('/seusParceiros', (req, res) => {
+app.get('/seusParceiros', verificaLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'SeusParceiros', 'parceiros_index.html'))
 })
 
 //ROTA PARA DASHBOARD
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', verificaLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'Dashboard', 'dashboard_index.html'))
 })
 
 //ROTA PARA ENTREGAS
-app.get('/entregas', (req, res) => {
+app.get('/entregas', verificaLogin, (req, res) => {
     res.sendFile(path.join(__dirname, 'src', 'views', 'Entregas', 'entregas_index.html'))
 })
 
@@ -553,7 +553,39 @@ app.get('/entregas/negociando', verificaLogin, async (req, res) => {
     }
 });
 
+//ROTA PARA FAZER LOGOUT DO SISTEMA E EXCLUIR COOKIES DA SESSÃO
+app.post('/logout', (req, res) => {
+    try {
+        //VERIFICA SE O USUÁRIO ESTÁ LOGADO
+        if(req.session) {
 
+            //DESTRÓI A SESSÃO DO USUÁRIO
+            req.session.destroy((err) => {
+                //VERIFICA SE OCORRE UM ERRO AO DESTRUIR A SESSÃO
+                if(err) {
+                    //JOGA UM ERRO
+                    throw new Error('Erro ao tentar sair. Tente novamente.')
+                }
+
+                //LIMPA OS COOKIES
+                res.clearCookie('connect.sid')
+
+                //RETORNA UMA MENSAGEM DE SUCESSO
+                return res.status(200).json({ message: 'Logout realizado com sucesso.' })
+            })
+        }
+
+        else {
+            //RETORNA UMA MENSAGEM CASO A SESSÃO NÃO SEJA ENCONTRADA
+            return res.status(400).json({ message: 'Nenhuma sessão ativa encontrada.' })
+        }
+    } 
+    
+    catch (error) {
+        //RETORNA UMA MENSAGEM DE ERRO
+        return res.status(500).json({ message: 'Erro no servidor ao tentar realizar o Logout.', error: error.message })
+    }
+})
 
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');

@@ -1,6 +1,23 @@
 // Função de logout
-function logout() {
-    window.location.href = '../Login/login_index.html';
+async function logout() {
+    try {
+        const response = await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            credentials: 'include' // Garante que os cookies de sessão sejam enviados
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            window.location.href = '../Login/login_index.html'; // Redireciona para a página de login
+        } else {
+            alert('Erro: ' + result.message);
+        }
+    } 
+    
+    catch (error) {
+        console.error('Erro ao tentar realizar logout:', error);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
