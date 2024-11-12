@@ -109,8 +109,9 @@ async function carregarEntregasNegociando() {
                         <h5>Tipo do Resíduo: ${tipo}</h5>
                         <h5 class="card-title">Tipo de Entrega: ${tipoEntrega}</h5>
                         <p class="card-text">Data da Entrega: ${dataEntrega}</p>
-                        <input type="text" class="form-control mb-2" placeholder="Endereço">
-                        <button style="background-color: rgba(57, 104, 134, 1); color: white;" class="btn btn-primary">Enviar</button>
+                        <div class="place-picker-container">
+                            <gmpx-place-picker placeholder="Colocar Endereço"></gmpx-place-picker>
+                        </div>
                     </div>
                 `;
 
