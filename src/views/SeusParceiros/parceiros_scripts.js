@@ -133,6 +133,8 @@ function generateUserCards(users) {
                                 <p class="card-text"><strong>Nome do responsável:</strong> ${user.nome}</p>
                                 <p class="card-text"><strong>Email de contato:</strong> ${user.email}</p>
                                 <p class="card-text"><strong>Telefone de contato:</strong> ${user.telefone}</p>
+                                <!-- Botão "Conectar" abaixo das informações -->
+                                <button class="btn btn-primary btn-sm w-100 mt-3" onclick="openOutlook('${user.email}', '${user.nome}')">Contato</button>
                             </div>
                         </div>
                     </div>
@@ -146,6 +148,29 @@ function generateUserCards(users) {
         slideIndex++;
     }
 }
+
+// Função para abrir o Outlook com e-mail, assunto e mensagem personalizada
+function openOutlook(email, nomeResponsavel) {
+    // Obter o primeiro nome do responsável
+    const primeiroNome = nomeResponsavel.split(' ')[0];
+
+    // Defina o assunto e personalize a mensagem
+    const subject = 'Interesse em anúncio no Ecomolk';
+    const body = `Olá ${primeiroNome},\n\nTenho interesse no resíduo que você anunciou no Ecomolk. Quando podemos conversar a respeito?`;
+
+    // Codifique os parâmetros para evitar problemas com caracteres especiais
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+
+    // Construa o link mailto com o assunto e a mensagem personalizada
+    const mailtoLink = `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
+
+    // Abra o cliente de e-mail padrão
+    window.location.href = mailtoLink;
+}
+
+
+
 
 // Chama as funções quando a página carregar
 window.onload = function() {
