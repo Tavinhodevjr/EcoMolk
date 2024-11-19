@@ -3,7 +3,7 @@
 
 * {
     font-family: 'Poppins', sans-serif;
-    box-sizing: border-box; /* Adiciona box-sizing para melhor controle de layout */
+    box-sizing: border-box;
 }
 
 body {
@@ -46,7 +46,6 @@ body {
     width: 100%;
 }
 
-/* Barra de pesquisa */
 .search-input {
     width: 300px;
     padding: 10px;
@@ -64,7 +63,6 @@ body {
     background-color: #fcfcfc;
 }
 
-/* Botão de pesquisa */
 .btn {
     margin-left: 10px;
     background-color: rgba(27, 74, 120);
@@ -89,19 +87,23 @@ body {
 
 /* Carrossel */
 .carousel-inner {
-    padding: 30px; /* Adiciona espaço em volta dos cards */
+    padding: 30px;
 }
 
 .carousel-inner .card {
-    height: 220px; /* Aumenta a altura dos cards */
-    width: 380px; /* Aumenta a largura dos cards */
-    margin: 0 10px; /* Mantém margens laterais para espaçamento */
+    height: 280px;
+    width: 380px;
+    margin: 0 10px;
     background-color: rgb(198, 211, 211);
     border: 2px solid transparent;
-    border-radius: 8px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza o conteúdo verticalmente */
+    padding: 15px;
     transition: transform 0.2s, border-color 0.2s;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
 }
 
 .card:hover {
@@ -111,8 +113,8 @@ body {
 
 .carousel-control-prev,
 .carousel-control-next {
-    top: 0; /* Posiciona as setas diretamente acima dos cards */
-    transform: translateY(-50%); /* Centraliza verticalmente em relação ao carrossel */
+    top: 0;
+    transform: translateY(-50%);
 }
 
 .carousel-control-prev-icon,
@@ -120,40 +122,63 @@ body {
     background-color: rgba(27, 74, 120);
 }
 
+.card .btn {
+    background-color: rgba(27, 74, 120);
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.4rem; /* Ajuste no padding para o botão não ficar muito pequeno */
+    border: 2px solid rgba(27, 74, 120);
+    border-radius: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: auto; /* Faz o botão ajustar sua largura automaticamente */
+    max-width: 150px; /* Limita a largura máxima */
+    min-width: 100px; /* Limita a largura mínima */
+    display: block; /* O display block faz o botão ocupar a largura disponível */
+    margin: 0 auto; /* Centraliza o botão horizontalmente */
+    margin-top: auto; /* Garante que o botão fique no final do card */
+}
+
+.card .btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+
+/* Novos cards */
 .new-cards-container {
-    display: flex; /* Usamos flexbox para alinhar os cards */
-    flex-wrap: wrap; /* Permite que os cards se movam para a linha seguinte se não houver espaço */
-    justify-content: center; /* Centraliza os cards */
-    margin-top: 50px; /* Espaço acima dos novos cards */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
 }
 
 .new-card {
-    height: 250px; /* Altura fixa dos novos cards */
-    width: 200px; /* Largura fixa dos novos cards */
-    margin: 10px; /* Espaçamento entre os cards */
+    height: 250px;
+    width: 200px;
+    margin: 10px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px; /* Espaçamento interno dos novos cards */
-    text-align: center; /* Centraliza o texto dentro dos cards */
+    padding: 15px;
+    text-align: center;
 }
 
 .new-card h3 {
-    font-size: 1.2rem; /* Tamanho do título */
-    margin-bottom: 60px; /* Espaço abaixo do título */
+    font-size: 1.2rem;
+    margin-bottom: 60px;
 }
 
 .new-card p {
-    font-size: 1.4rem; /* Tamanho do texto */
-    color: #000000; /* Cor do texto */
-    font-weight: 600; /* Negrito se desejar */
+    font-size: 1.4rem;
+    color: #000000;
+    font-weight: 600;
 }
 
 .new-cards-title {
-    margin-left: 0px; /* Ajuste o valor conforme necessário */
-    font-size: 2rem; /* Tamanho do texto */
-    font-weight: 800; /* Negrito se desejar */
-    color: #333; /* Cor do texto */
+    margin-left: 0px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #333;
 }
 
 #parceiros-cadastrados-card {
@@ -197,7 +222,6 @@ body {
 }
 
 .new-card:hover {
-    transform: scale(1.05); /* Aumenta levemente o card ao passar o mouse */
+    transform: scale(1.05);
     transition: transform 0.8s ease;
 }
-
