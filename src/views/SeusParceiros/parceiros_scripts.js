@@ -95,6 +95,57 @@ async function fetchUsuarios() {
     }
 }
 
+async function fetchResiduosQuantidades() {
+    try {
+        const response = await fetch('/tipos/quantidade'); // Endpoint para obter os dados
+        const data = await response.json();
+
+        if (response.ok) {
+            // Dados recebidos, é um array com os tipos de resíduos e suas quantidades
+            const tiposResiduos = data; // Array de objetos com tipo e quantidade
+
+            // Preparando os dados para o gráfico
+            const chartData = tiposResiduos.map(item => item.tipo); // Tipos de resíduos
+            const chartCounts = tiposResiduos.map(item => item.quantidade); // Quantidade de cada tipo
+
+            // Criar o gráfico
+            const ctx = document.getElementById('residuosChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData,
+                    datasets: [{
+                        label: 'Quantidade de resíduos anunciados',
+                        data: chartCounts,
+                        backgroundColor: 'rgba(27, 74, 120, 0.2)',
+                        borderColor: 'rgba(27, 74, 120, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value){
+                                    return value % 1 === 0 ? value : '';
+                                }
+
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error(data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao buscar tipos de resíduos:', error);
+    }
+}
+
 // Função para pesquisar parceiros com base no termo inserido
 window.searchParceiros = function () {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -170,8 +221,6 @@ function openOutlook(email, nomeResponsavel) {
 }
 
 
-
-
 // Chama as funções quando a página carregar
 window.onload = function() {
     fetchUsuarios();             // Busca os usuários
@@ -179,4 +228,5 @@ window.onload = function() {
     fetchResiduosNegociando();  // Busca os resíduos em negociação
     fetchResiduosConcluidos();  // Busca os resíduos concluídos
     fetchResiduosCancelados();  // Busca os resíduos cancelados
+    fetchResiduosQuantidades()
 };
