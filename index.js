@@ -509,10 +509,10 @@ app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');
 
-    //FUNÇÃO APENAS PARA PRODUÇÃO
-    // async function abrirPagina(url) {
-    //     const open = await import('open')
-    //     open.default(url); 
-    // }
-    // abrirPagina('http://localhost:3000/landingPage')
+    async function abrirPagina(url) {
+        const open = await import('open')
+        open.default(url); 
+    }
+
+    abrirPagina('http://localhost:3000/landingPage')
 })
