@@ -553,6 +553,40 @@ app.get('/entregas/negociando', verificaLogin, async (req, res) => {
     }
 });
 
+app.get('/tipos/quantidade', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId; // Recuperando o id do usuário ativo
+
+        // Consulta para pegar todos os tipos de resíduos com a quantidade, excluindo os do usuário ativo
+        const tiposResiduos = await Residuos.findAll({
+            attributes: [
+                'tipo',
+                [sequelize.fn('COUNT', sequelize.col('tipo')), 'quantidade'] // Contando a quantidade por tipo
+            ],
+            where: sequelize.where(sequelize.col('id_usuario'), '!=', userId), // Exclui os resíduos do usuário ativo
+            group: ['tipo'], // Agrupa por tipo
+            order: [[sequelize.literal('quantidade'), 'DESC']] // Ordena pela quantidade de resíduos
+        });
+
+        // Verifica se encontrou algum tipo de resíduo
+        if (tiposResiduos.length === 0) {
+            return res.status(404).json({ message: 'Nenhum tipo de resíduo encontrado' });
+        }
+
+        // Formata os dados para retornar tipo e quantidade
+        const tiposArray = tiposResiduos.map(item => ({
+            tipo: item.tipo,
+            quantidade: item.get('quantidade')
+        }));
+
+        // Retorna os tipos de resíduos com suas quantidades
+        res.json(tiposArray);
+    } catch (error) {
+        console.error("Erro ao capturar os tipos de resíduos:", error);
+        res.status(500).json({ message: 'Erro ao capturar os tipos de resíduos', error: error.message });
+    }
+});
+
 //ROTA PARA FAZER LOGOUT DO SISTEMA E EXCLUIR COOKIES DA SESSÃO
 app.post('/logout', (req, res) => {
     try {

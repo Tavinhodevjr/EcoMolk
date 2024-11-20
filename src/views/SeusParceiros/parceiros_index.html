@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="parceiros_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title>Seus Parceiros</title>
 </head>
 
@@ -72,6 +74,7 @@
 
     <!-- Novos cards -->
     <div class="container mt-4">
+        <h3>Dados dos seus parceiros</h3>
         <div class="new-cards-container">
             <div class="new-card" id="parceiros-cadastrados-card">
                 <h3>Parceiros Cadastrados</h3>
@@ -96,10 +99,17 @@
         </div>
     </div>
 
+    <!-- Gráfico de Tipo de Resíduo Mais Anunciado -->
+    <div class="container mt-4">
+        <h3>Tipos dos resíduos anunciados</h3>
+        <canvas id="residuosChart" width="800" height="150"></canvas>
+    </div>
 
 
     <script src="parceiros_scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 
 </html>
