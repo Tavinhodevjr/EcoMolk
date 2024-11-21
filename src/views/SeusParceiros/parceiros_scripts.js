@@ -446,7 +446,7 @@ window.searchParceiros = function () {
     const filteredUsers = usuariosData.filter(user =>
         user.nome_empresa.toLowerCase().includes(searchTerm) || // Filtra pelo nome da empresa
         user.nome.toLowerCase().includes(searchTerm) // Filtra pelo nome do responsável
-    );s
+    );
     generateUserCards(filteredUsers); // Exibe os usuários filtrados
 };
 

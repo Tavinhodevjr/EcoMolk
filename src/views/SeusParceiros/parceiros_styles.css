@@ -19,7 +19,7 @@ body {
     top: 0;
     width: 100%;
     background-color: rgb(198, 211, 211);
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 10px;
     z-index: 3;
 }
@@ -27,6 +27,7 @@ body {
 .nav-link {
     font-weight: 600;
     margin-right: 150px;
+    color: rgba(27,74,120)
 }
 
 .nav-link:hover {
@@ -52,19 +53,28 @@ body {
     border: 1px solid #ddd;
     border-radius: 20px;
     font-size: 1rem;
-    color: #555;
+    color: #ffffff;
     background-color: #ffffff;
     transition: border 0.2s;
+    border: 1px solid rgba(27, 74, 120);
+    background-color: rgba(27, 74, 120);
 }
 
 .search-input:focus {
     outline: none;
     border: 1px solid rgba(27, 74, 120);
-    background-color: #fcfcfc;
+    background-color: rgba(27, 74, 120);
+    color: #ffffff
 }
 
+/* Texto do placeholder */
+.search-input::placeholder {
+    color: #ffffff; /* Cor do texto do placeholder */
+}
+
+/* Botão de pesquisa */
 .btn {
-    margin-left: 10px;
+    margin-left: 10px; /* Espaço entre a barra de pesquisa e o botão */
     background-color: rgba(27, 74, 120);
     color: white;
     padding: 10px 20px;
@@ -81,8 +91,8 @@ body {
 
 .btn:hover {
     background-color: #0056b3;
-    color: rgba(27, 74, 120);
-    transform: translateY(-2px);
+    color: white;
+    transform: scale(1.05);
 }
 
 h2 {
@@ -139,7 +149,7 @@ h2 {
 }
 
 .card .btn {
-    background: linear-gradient(135deg, #1b4a78, #6795c7); /* Gradiente no botão */
+    background: rgba(111, 156, 138);
     color: white;
     font-size: 0.9rem;
     padding: 0.4rem 0.4rem; /* Ajuste no padding para o botão não ficar muito pequeno */
@@ -155,7 +165,7 @@ h2 {
 }
 
 .card .btn:hover {
-    background-color: #0056b3;
+    background-color: rgb(40, 190, 130); /* Cor mais escura para hover */
     transform: translateY(-2px);
 }
 
