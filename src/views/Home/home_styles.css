@@ -18,14 +18,15 @@ body {
     top: 0;
     width: 100%;
     background-color: rgb(198, 211, 211);
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 10px;
-    z-index: 3; /* Aumenta o z-index para garantir que fique acima do botão de pesquisa */
+    z-index: 3; 
 }
 
 .nav-link {
-    font-weight: 600;
+    font-weight: 550;
     margin-right: 150px; /* Ajustado para melhor espaçamento */
+    color: rgba(27,74,120)
 }
 
 .nav-link:hover {
@@ -49,19 +50,26 @@ body {
 .search-input {
     width: 300px; /* Defina uma largura fixa para a barra de pesquisa */
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(27, 74, 120);
     border-radius: 20px;
     font-size: 1rem;
-    color: #555;
-    background-color: #ffffff;
+    color: #ffffff;
+    background-color: rgba(27, 74, 120);
     transition: border 0.2s;
 }
 
 .search-input:focus {
     outline: none;
     border: 1px solid rgba(27, 74, 120);
-    background-color: #fcfcfc;
+    background-color: rgba(27, 74, 120);
+    color: #ffffff
 }
+
+/* Texto do placeholder */
+.search-input::placeholder {
+    color: #ffffff; /* Cor do texto do placeholder */
+}
+
 
 /* Botão de pesquisa */
 .btn {
@@ -88,18 +96,18 @@ body {
 
 /* Botões */
 .btn-conectar {
-    background-color: rgba(27, 74, 120);
-    border: 2px solid rgba(27, 74, 120);
+    background-color: rgba(111, 156, 138); /* Cor de fundo mais forte para o botão */
+    border: 2px solid rgba(111, 156, 138); /* Cor de borda do botão */
     color: white;
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem; /* Tamanho de fonte um pouco maior para os botões */
+    padding: 0.5rem 1rem; /* Mais espaçamento dentro do botão */
+    border-radius: 25px; /* Bordas arredondadas */
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.card-footer {
-    display: flex;
-    justify-content: center;
-    margin-top: auto;
-    background-color: rgb(198, 211, 211);
+.btn-conectar:hover {
+    background-color: rgb(40, 190, 130); /* Cor mais escura para hover */
+    transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
 }
 
 /* Estilo dos cards */
@@ -109,35 +117,62 @@ body {
     justify-content: flex-start;
     max-width: calc(100% - 270px); /* Ajusta a largura do container, descontando a largura da sidebar */
     margin-left: 270px; /* Garante que o container dos cards fique ao lado da sidebar */
-    padding-top: 10px; /* Reduzido para diminuir a distância entre a barra de pesquisa e os cards */
+    padding-top: 20px; /* Espaçamento ajustado para separar melhor os cards */
 }
 
 .card {
-    background-color: rgb(198, 211, 211);
-    border: 2px solid transparent;
-    border-radius: 8px;
-    padding: 15px;
+    background-color: rgba(198,211,211); /* Cor mais suave para o fundo dos cards */
+    border: 2px solid #ddd; /* Borda suave para os cards */
+    border-radius: 12px; /* Bordas arredondadas para suavizar */
+    padding: 20px; /* Maior espaçamento interno */
     margin: 20px; /* Distância entre os cards */
-    width: 300px; /* Largura dos cards */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, border-color 0.2s;
+    width: 355px; /* Largura dos cards */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra mais suave para destaque */
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    border-color: #6795c7;
+    transform: translateY(-10px); /* Eleva o card ao passar o mouse */
+    border-color: #6795c7; /* Cor de borda ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
 }
 
 .card h2 {
-    font-size: 1.1em;
-    color: rgba(27, 74, 120);
+    font-size: 1.2em; /* Tamanho de fonte maior para os títulos */
+    color: #1B4A78; /* Cor do título combinando com os botões */
+    margin-bottom: 10px; /* Espaçamento abaixo do título */
+    font-weight: bold; /* Deixa o título mais destacado */
 }
 
 .card p {
-    margin: 5px 0;
-    color: #000000;
-    font-size: 0.8em;
+    margin: 10px 0;
+    color: #333; /* Cor mais escura para o texto */
+    font-size: 1.1rem; /* Tamanho de fonte um pouco maior para melhor legibilidade */
+    line-height: 1.5; /* Aumenta o espaçamento entre as linhas */
 }
+
+/* Card Footer */
+.card-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    background-color: rgba(198,211,211); /* Cor de fundo mais suave para o rodapé */
+    padding: 10px;
+    border-radius: 0 0 12px 12px; /* Arredondamento nas bordas inferiores */
+}
+
+.card-footer a {
+    color: #1B4A78;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.card-footer a:hover {
+    color: #6795c7; /* Cor de hover mais suave */
+}
+
 
 /* Sidebar */
 .sidebar {
@@ -169,23 +204,25 @@ body {
 
 
 #logoutButton {
-    background-color: rgba(27, 74, 120); /* Cor de fundo igual ao botão de pesquisa */
+    background-color: rgba(111, 156, 138); /* Cor de fundo mais suave para harmonia */
     color: white; /* Cor do texto */
-    padding: 10px 20px;
+    padding: 12px 24px; /* Espaçamento maior para dar mais destaque */
     margin-top: auto;
-    font-size: 1rem;
-    border: 2px solid rgba(27, 74, 120); /* Borda igual ao botão de pesquisa */
-    border-radius: 20px; /* Bordas arredondadas */
-    font-weight: bold;
-    transition: background-color 0.3s, transform 0.2s; /* Animação */
+    font-size: 1rem; /* Tamanho da fonte em harmonia com o resto da página */
+    border: 2px solid rgba(111, 156, 138); /* Cor de borda suave */
+    border-radius: 25px; /* Bordas mais arredondadas para suavizar */
+    font-weight: 600; /* Peso da fonte para dar mais destaque */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Animação suave */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidade */
 }
 
 #logoutButton:hover {
-    background-color: #0056b3; /* Cor de fundo ao passar o mouse, igual ao botão de pesquisa */
-    color: white;
-    transform: scale(1.05);
-    border-color: #0056b3; /* Cor da borda ao passar o mouse */
+    background-color: #40c7a7; /* Cor mais vibrante ao passar o mouse */
+    border-color: #40c7a7; /* Cor da borda ao passar o mouse */
+    transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra mais forte no hover */
 }
+
 
 
 /* Conteúdo principal */

@@ -19,7 +19,7 @@ body {
     top: 0;
     width: 100%;
     background-color: rgb(198, 211, 211);
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 10px;
     z-index: 3;
 }
@@ -27,6 +27,7 @@ body {
 .nav-link {
     font-weight: 600;
     margin-right: 150px;
+    color: rgba(27,74,120)
 }
 
 .nav-link:hover {
@@ -50,18 +51,24 @@ body {
 .search-input {
     width: 300px; /* Defina uma largura fixa para a barra de pesquisa */
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(27, 74, 120);
     border-radius: 20px;
     font-size: 1rem;
-    color: #555;
-    background-color: #ffffff;
+    color: #ffffff;
+    background-color: rgba(27, 74, 120);
     transition: border 0.2s;
 }
 
 .search-input:focus {
     outline: none;
     border: 1px solid rgba(27, 74, 120);
-    background-color: #fcfcfc;
+    background-color: rgba(27, 74, 120);
+    color: #ffffff
+}
+
+/* Texto do placeholder */
+.search-input::placeholder {
+    color: #ffffff; /* Cor do texto do placeholder */
 }
 
 /* Botão de pesquisa */
@@ -109,8 +116,8 @@ body {
 }
 
 .carousel-inner .card {
-    height: 500px; /* Aumenta a altura dos cards */
-    width: 300px; /* Aumenta a largura dos cards */
+    height: 550px; /* Aumenta a altura dos cards */
+    width: 400px; /* Aumenta a largura dos cards */
     margin: 0 10px; /* Mantém margens laterais para espaçamento */
     background-color: rgb(198, 211, 211);
     border: 2px solid transparent;
@@ -143,13 +150,16 @@ body {
 
 .carousel-control-prev,
 .carousel-control-next {
-    top: 0; /* Posiciona as setas diretamente acima dos cards */
-    transform: translateY(-50%); /* Centraliza verticalmente em relação ao carrossel */
+    top: 0;
+    transform: translateY(-50%);
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: rgba(27, 74, 120);
+    background-color: rgba(27, 74, 120, 0.8);
+    border-radius: 50%; /* Ícones circulares */
+    width: 40px;
+    height: 40px;
 }
 
 /* Estilização da caixa de seleção */
