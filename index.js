@@ -480,6 +480,27 @@ app.get('/cancelado/count', verificaLogin, async (req, res) => {
     }
 });
 
+// Rota para obter o total de resíduos cadastrados, excluindo os resíduos do usuário atual
+app.get('/residuos/total', verificaLogin, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+
+        // Contando todos os resíduos cadastrados, excluindo os do usuário atual
+        const totalResiduos = await Residuos.count({
+            where: {
+                id_usuario: { [Op.ne]: userId } // Exclui os resíduos do usuário atual
+            }
+        });
+
+        return res.status(200).json({ message: 'Total de resíduos cadastrados com sucesso:', total: totalResiduos });
+    } catch (error) {
+        console.error('Erro na rota /residuos/total:', error);
+        return res.status(500).json({ message: 'Erro ao exibir o total de resíduos cadastrados', error: error.message });
+    }
+});
+
+
+
 // ROTA PARA ATUALIZAR O STATUS DO RESÍDUO
 app.put('/atualizarStatus/:id', verificaLogin, async (req, res) => {
     const { id } = req.params; // ID do resíduo
@@ -587,6 +608,113 @@ app.get('/tipos/quantidade', verificaLogin, async (req, res) => {
     }
 });
 
+app.get('/empresa/mais-residuos', verificaLogin, async (req, res) => {
+    try {
+        const usuarioId = req.session.userId;
+
+        // Consulta para contar a quantidade de resíduos por empresa, excluindo o usuário atual
+        const empresaComMaisResiduos = await sequelize.query(
+            `SELECT u.nome_empresa, COUNT(r.id) AS quantidade_residuos
+            FROM residuos r
+            INNER JOIN users u ON r.id_usuario = u.id
+            WHERE r.id_usuario != :usuarioId
+            GROUP BY u.nome_empresa
+            ORDER BY quantidade_residuos DESC
+            LIMIT 1`, 
+            {
+                replacements: { usuarioId }, // Substitui o :usuarioId pela variável `usuarioId`
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        if (empresaComMaisResiduos.length === 0) {
+            return res.status(404).json({ message: 'Nenhuma empresa encontrada com resíduos cadastrados' });
+        }
+
+        return res.status(200).json({ empresa: empresaComMaisResiduos[0] });
+    } catch (error) {
+        console.error('Erro ao capturar a empresa com mais resíduos cadastrados:', error);
+        return res.status(500).json({ message: 'Erro ao capturar a empresa com mais resíduos cadastrados', error: error.message });
+    }
+});
+
+
+app.get('/empresa/mais-interesse', verificaLogin, async (req, res) => {
+    try {
+        const usuarioId = req.session.userId;
+
+        // Consulta para encontrar o usuário mais interessado, excluindo a própria empresa
+        const empresaComMaisInteresse = await sequelize.query(
+            `SELECT u.nome_empresa, COUNT(r.id_usuario_interessado) AS quantidade_interesse
+            FROM residuos r
+            INNER JOIN users u ON r.id_usuario_interessado = u.id
+            WHERE r.id_usuario != :usuarioId AND r.id_usuario_interessado != :usuarioId
+            GROUP BY u.nome_empresa
+            ORDER BY quantidade_interesse DESC
+            LIMIT 1`,
+            {
+                replacements: { usuarioId }, // Substitui o :usuarioId pela variável `usuarioId`
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        if (empresaComMaisInteresse.length === 0) {
+            return res.status(404).json({ message: 'Nenhuma empresa encontrada com maior incidência de interesse' });
+        }
+
+        return res.status(200).json({ empresa: empresaComMaisInteresse[0] });
+    } catch (error) {
+        console.error('Erro ao capturar a empresa com mais incidência de interesse:', error);
+        return res.status(500).json({ message: 'Erro ao capturar a empresa com mais incidência de interesse', error: error.message });
+    }
+});
+
+app.get('/residuos/concluidos-porcentagem', verificaLogin, async (req, res) => {
+    try {
+        const usuarioId = req.session.userId; // Aqui estamos pegando o ID do usuário logado
+
+        // Consulta para pegar os resíduos de todas as empresas, excluindo a empresa com a sessão ativa
+        const residuos = await sequelize.query(
+            `SELECT r.status_residuo, r.id_usuario, u.nome_empresa
+            FROM residuos r
+            INNER JOIN users u ON r.id_usuario = u.id
+            WHERE r.id_usuario != :usuarioId AND r.id_usuario != :usuarioId
+            `,
+            {
+                replacements: { usuarioId }, // Substitui o :usuarioId pela variável `usuarioId`
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
+
+        if (residuos.length === 0) {
+            return res.status(200).json({ mensagem: 'Nenhum resíduo encontrado para outras empresas.' });
+        }
+
+        // Contando os resíduos com status "concluído"
+        const totalResiduos = residuos.length;
+        const residuosConcluidos = residuos.filter(residuo => residuo.status_residuo === 'concluido').length;
+
+        // Calculando a porcentagem de resíduos concluídos
+        const porcentagemConcluidos = (residuosConcluidos / totalResiduos) * 100;
+
+        return res.status(200).json({
+            porcentagemConcluidos: `${porcentagemConcluidos.toFixed(1)}%`,
+            totalResiduos,
+            residuosConcluidos,
+        });
+    } catch (error) {
+        console.error('Erro ao calcular a porcentagem de resíduos concluídos:', error);
+        return res.status(500).json({ message: 'Erro ao calcular a porcentagem de resíduos concluídos', error: error.message });
+    }
+});
+
+
+
+
+
+
+
+
 //ROTA PARA FAZER LOGOUT DO SISTEMA E EXCLUIR COOKIES DA SESSÃO
 app.post('/logout', (req, res) => {
     try {
@@ -629,5 +757,5 @@ app.listen(3000, () =>{
         open.default(url); 
     }
 
-    abrirPagina('http://localhost:3000/landingPage')
+    // abrirPagina('http://localhost:3000/landingPage')
 })
