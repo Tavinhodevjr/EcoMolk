@@ -8,7 +8,52 @@ async function fetchResiduosNegociando() {
         const data = await response.json();
 
         if (response.ok) {
-            document.getElementById('residuosNegociando').innerText = data.quantidade; // Supondo que você tenha um elemento com esse ID
+            document.getElementById('residuosNegociando').innerText = data.quantidade;
+
+            // Buscar total de resíduos para calcular a porcentagem
+            const totalResiduosResponse = await fetch('/residuos/total');
+            const totalResiduosData = await totalResiduosResponse.json();
+
+            if (totalResiduosResponse.ok) {
+                const totalResiduos = totalResiduosData.total;
+                const percentage = (data.quantidade / totalResiduos) * 100;
+                const ctx = document.getElementById('graficoNegociando').getContext('2d');
+
+                // Criando o gradiente para a cor de fundo
+                const gradient = ctx.createLinearGradient(0, 0, 0, 200); 
+                gradient.addColorStop(0, '#FFEB3B'); // cor inicial (amarelo claro)
+                gradient.addColorStop(1, '#FFF176'); // cor final (amarelo suave)
+
+                // Definindo o gráfico de Resíduos em Negociação
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Negociando', 'Outros'],
+                        datasets: [{
+                            data: [data.quantidade, totalResiduos - data.quantidade],
+                            backgroundColor: [gradient, '#F4F4F4'], // Cor mais suave para "Outros"
+                            borderWidth: 0,
+                            hoverOffset: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutoutPercentage: 90,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.raw + ' (' + percentage.toFixed(2) + '%)';
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
         } else {
             console.error(data.message);
         }
@@ -17,14 +62,59 @@ async function fetchResiduosNegociando() {
     }
 }
 
-// Função para buscar o número de resíduos em status "concluido"
+// Função para buscar o número de resíduos em status "concluídos"
 async function fetchResiduosConcluidos() {
     try {
         const response = await fetch('/concluido/count');
         const data = await response.json();
 
         if (response.ok) {
-            document.getElementById('residuosConcluidos').innerText = data.quantidade; // Supondo que você tenha um elemento com esse ID
+            document.getElementById('residuosConcluidos').innerText = data.quantidade;
+
+            // Buscar total de resíduos para calcular a porcentagem
+            const totalResiduosResponse = await fetch('/residuos/total');
+            const totalResiduosData = await totalResiduosResponse.json();
+
+            if (totalResiduosResponse.ok) {
+                const totalResiduos = totalResiduosData.total;
+                const percentage = (data.quantidade / totalResiduos) * 100;
+                const ctx = document.getElementById('graficoConcluidos').getContext('2d');
+
+                // Criando o gradiente para a cor de fundo
+                const gradient = ctx.createLinearGradient(0, 0, 0, 200); 
+                gradient.addColorStop(0, '#9C27B0'); // cor inicial (roxo suave)
+                gradient.addColorStop(1, '#D1C4E9'); // cor final (roxo claro)
+
+                // Definindo o gráfico de Resíduos Concluídos
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Concluídos', 'Outros'],
+                        datasets: [{
+                            data: [data.quantidade, totalResiduos - data.quantidade],
+                            backgroundColor: [gradient, '#F4F4F4'], // Cor mais suave para "Outros"
+                            borderWidth: 0,
+                            hoverOffset: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutoutPercentage: 90,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.raw + ' (' + percentage.toFixed(2) + '%)';
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
         } else {
             console.error(data.message);
         }
@@ -40,7 +130,52 @@ async function fetchResiduosCancelados() {
         const data = await response.json();
 
         if (response.ok) {
-            document.getElementById('residuosCancelados').innerText = data.quantidade; // Supondo que você tenha um elemento com esse ID
+            document.getElementById('residuosCancelados').innerText = data.quantidade;
+
+            // Buscar total de resíduos para calcular a porcentagem
+            const totalResiduosResponse = await fetch('/residuos/total');
+            const totalResiduosData = await totalResiduosResponse.json();
+
+            if (totalResiduosResponse.ok) {
+                const totalResiduos = totalResiduosData.total;
+                const percentage = (data.quantidade / totalResiduos) * 100;
+                const ctx = document.getElementById('graficoCancelados').getContext('2d');
+
+                // Criando o gradiente para a cor de fundo
+                const gradient = ctx.createLinearGradient(0, 0, 0, 200); 
+                gradient.addColorStop(0, '#E57373'); // cor inicial (vermelho claro)
+                gradient.addColorStop(1, '#FFCDD2'); // cor final (vermelho suave)
+
+                // Definindo o gráfico de Resíduos Cancelados
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Cancelados', 'Outros'],
+                        datasets: [{
+                            data: [data.quantidade, totalResiduos - data.quantidade],
+                            backgroundColor: [gradient, '#F4F4F4'], // Cor mais suave para "Outros"
+                            borderWidth: 0,
+                            hoverOffset: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutoutPercentage: 90,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.raw + ' (' + percentage.toFixed(2) + '%)';
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
         } else {
             console.error(data.message);
         }
@@ -49,15 +184,67 @@ async function fetchResiduosCancelados() {
     }
 }
 
-// Função para buscar o número de resíduos disponíveis
+
+// Função para buscar o número de resíduos em status "disponível"
 async function fetchResiduosDisponiveis() {
     try {
-        const response = await fetch('/disponiveis/count'); // Chama a rota que você criou
+        const response = await fetch('/disponiveis/count');
         const data = await response.json();
 
         if (response.ok) {
             // Atualiza o elemento que exibe a quantidade de resíduos disponíveis
-            document.getElementById('residuosDisponiveis').innerText = data.quantidade; // Supondo que você tenha um elemento com esse ID
+            document.getElementById('residuosDisponiveis').innerText = data.quantidade;
+
+            // Agora, vamos criar o gráfico
+            const totalResiduosResponse = await fetch('/residuos/total');
+            const totalResiduosData = await totalResiduosResponse.json();
+
+            if (totalResiduosResponse.ok) {
+                const totalResiduos = totalResiduosData.total;
+
+                // Calculando a porcentagem
+                const percentage = (data.quantidade / totalResiduos) * 100;
+
+                // Pegando o contexto do gráfico
+                const ctx = document.getElementById('graficoDisponiveis').getContext('2d');
+
+                // Criando o gradiente para a cor de fundo
+                const gradient = ctx.createLinearGradient(0, 0, 0, 200); 
+                gradient.addColorStop(0, '#81C784'); // cor inicial (verde claro)
+                gradient.addColorStop(1, '#A5D6A7'); // cor final (verde suave)
+
+                // Criando o gráfico
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Disponíveis', 'Outros'],
+                        datasets: [{
+                            data: [data.quantidade, totalResiduos - data.quantidade],
+                            backgroundColor: [gradient, '#F4F4F4'], // Cor mais suave para "Outros"
+                            borderWidth: 0,
+                            hoverOffset: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutoutPercentage: 90,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.raw + ' (' + percentage.toFixed(2) + '%)';
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error(totalResiduosData.message);
+            }
         } else {
             console.error(data.message);
         }
@@ -65,6 +252,7 @@ async function fetchResiduosDisponiveis() {
         console.error('Erro ao buscar resíduos disponíveis:', error);
     }
 }
+
 
 // Função para buscar usuários de outros usuários e o total de parceiros
 async function fetchUsuarios() {
@@ -101,15 +289,17 @@ async function fetchResiduosQuantidades() {
         const data = await response.json();
 
         if (response.ok) {
-            // Dados recebidos, é um array com os tipos de resíduos e suas quantidades
             const tiposResiduos = data; // Array de objetos com tipo e quantidade
-
-            // Preparando os dados para o gráfico
             const chartData = tiposResiduos.map(item => item.tipo); // Tipos de resíduos
             const chartCounts = tiposResiduos.map(item => item.quantidade); // Quantidade de cada tipo
 
-            // Criar o gráfico
+            // Configurar o gradiente
             const ctx = document.getElementById('residuosChart').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(0, 123, 255, 0.9)'); // Azul claro
+            gradient.addColorStop(1, 'rgba(40, 167, 69, 0.3)'); // Verde claro
+
+            // Criar o gráfico
             new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -117,24 +307,61 @@ async function fetchResiduosQuantidades() {
                     datasets: [{
                         label: 'Quantidade de resíduos anunciados',
                         data: chartCounts,
-                        backgroundColor: 'rgba(27, 74, 120, 0.2)',
-                        borderColor: 'rgba(27, 74, 120, 1)',
+                        backgroundColor: gradient,
+                        borderColor: 'rgba(0, 123, 255, 1)', // Cor da borda em azul
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Poppins'
+                                },
+                                color: '#000' // Cor preta para os textos da legenda
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Tipo: ${context.label}\nQuantidade: ${context.raw}`;
+                                }
+                            },
+                            backgroundColor: '#333',
+                            titleColor: '#fff',
+                            bodyColor: '#ddd',
+                            borderWidth: 1,
+                            borderColor: '#ccc'
+                        }
+                    },
                     scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    family: 'Poppins'
+                                },
+                                color: '#000' // Cor preta para os textos no eixo X
+                            }
+                        },
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                stepSize: 1,
-                                callback: function(value){
-                                    return value % 1 === 0 ? value : '';
-                                }
-
+                                font: {
+                                    size: 12,
+                                    family: 'Poppins'
+                                },
+                                color: '#000', // Cor preta para os textos no eixo Y
+                                stepSize: 1
                             }
                         }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutBounce'
                     }
                 }
             });
@@ -146,13 +373,80 @@ async function fetchResiduosQuantidades() {
     }
 }
 
+// Função para buscar a empresa que mais cadastrou resíduos
+async function fetchEmpresaMaisResiduos() {
+    try {
+        const response = await fetch('/empresa/mais-residuos');
+        if (!response.ok) {
+            throw new Error('Erro ao buscar a empresa com mais resíduos');
+        }
+        const data = await response.json();
+        const empresa = data.empresa;
+
+        // Atualiza o primeiro card com o nome da empresa
+        const cardResiduos = document.getElementById('empresa-mais-anuncia-card');
+        cardResiduos.querySelector('h3').textContent = 'Maior anunciante';
+        cardResiduos.querySelector('p').textContent = empresa.nome_empresa;
+    } catch (error) {
+        console.error('Erro ao buscar dados da empresa com mais resíduos:', error);
+        // Em caso de erro, pode mostrar uma mensagem padrão ou o erro
+        const cardResiduos = document.getElementById('empresa-mais-anuncia-card');
+        cardResiduos.querySelector('p').textContent = 'Erro ao carregar dados.';
+    }
+}
+
+// Função para buscar a empresa com mais interesse
+async function fetchEmpresaMaisInteresse() {
+    try {
+        const response = await fetch('/empresa/mais-interesse');
+        if (!response.ok) {
+            throw new Error('Erro ao buscar a empresa com mais interesse');
+        }
+        const data = await response.json();
+        const empresa = data.empresa;
+
+        // Atualiza o segundo card com o nome da empresa
+        const cardInteresse = document.getElementById('empresa-mais-interessada-card');
+        cardInteresse.querySelector('h3').textContent = 'Maior interessada';
+        cardInteresse.querySelector('p').textContent = empresa.nome_empresa;
+    } catch (error) {
+        console.error('Erro ao buscar dados da empresa com mais interesse:', error);
+        // Em caso de erro, pode mostrar uma mensagem padrão ou o erro
+        const cardInteresse = document.getElementById('empresa-mais-interessada-card');
+        cardInteresse.querySelector('p').textContent = 'Erro ao carregar dados.';
+    }
+}
+
+// Função para buscar a porcentagem de resíduos concluídos
+async function fetchPorcentagemResiduosConcluidos() {
+    try {
+        const response = await fetch('/residuos/concluidos-porcentagem');
+        if (!response.ok) {
+            throw new Error('Erro ao buscar a porcentagem de resíduos concluídos');
+        }
+        const data = await response.json();
+        const porcentagemConcluidos = data.porcentagemConcluidos;
+
+        // Atualiza o card "Negociações concluídas" com a porcentagem
+        const cardPorcentagem = document.getElementById('indice-sucesso-card');
+        cardPorcentagem.querySelector('h3').textContent = 'Índice de sucesso';
+        cardPorcentagem.querySelector('p').textContent = `${porcentagemConcluidos}`; // Exibe a porcentagem com "%" no final
+    } catch (error) {
+        console.error('Erro ao buscar dados de porcentagem de resíduos concluídos:', error);
+        // Em caso de erro, pode mostrar uma mensagem padrão ou o erro
+        const cardPorcentagem = document.getElementById('indice-sucesso-card');
+        cardPorcentagem.querySelector('p').textContent = 'Erro ao carregar dados.';
+    }
+}
+
+
 // Função para pesquisar parceiros com base no termo inserido
 window.searchParceiros = function () {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const filteredUsers = usuariosData.filter(user =>
         user.nome_empresa.toLowerCase().includes(searchTerm) || // Filtra pelo nome da empresa
         user.nome.toLowerCase().includes(searchTerm) // Filtra pelo nome do responsável
-    );
+    );s
     generateUserCards(filteredUsers); // Exibe os usuários filtrados
 };
 
@@ -228,5 +522,8 @@ window.onload = function() {
     fetchResiduosNegociando();  // Busca os resíduos em negociação
     fetchResiduosConcluidos();  // Busca os resíduos concluídos
     fetchResiduosCancelados();  // Busca os resíduos cancelados
-    fetchResiduosQuantidades()
+    fetchResiduosQuantidades();
+    fetchEmpresaMaisResiduos();
+    fetchEmpresaMaisInteresse();
+    fetchPorcentagemResiduosConcluidos();
 };

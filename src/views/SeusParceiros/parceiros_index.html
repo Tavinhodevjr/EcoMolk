@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="parceiros_styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 
     <title>Seus Parceiros</title>
 </head>
@@ -72,38 +73,82 @@
         </button>
     </div>
 
-    <!-- Novos cards -->
-    <div class="container mt-4">
-        <h3>Dados dos seus parceiros</h3>
-        <div class="new-cards-container">
-            <div class="new-card" id="parceiros-cadastrados-card">
-                <h3>Parceiros Cadastrados</h3>
-                <p id="parceirosTotal"></p> <!-- Aqui será exibido o total -->
-            </div>
-            <div class="new-card" id="residuos-disponiveis-card">
-                <h3>Resíduos disponíveis</h3>
-                <p id="residuosDisponiveis"></p> <!-- O número será atualizado aqui -->
-            </div>
-            <div class="new-card" id="residuos-negociacao-card">
-                <h3>Resíduos em negociação</h3>
-                <p id="residuosNegociando"></p> <!-- O número será atualizado aqui -->
-            </div>
-            <div class="new-card" id="residuos-concluidos-card">
-                <h3>Resíduos concluídos</h3>
-                <p id="residuosConcluidos"></p> <!-- O número será atualizado aqui -->
-            </div>
-            <div class="new-card" id="residuos-cancelados-card">
-                <h3>Resíduos cancelados</h3>
-                <p id="residuosCancelados"></p> <!-- O número será atualizado aqui -->
+<!-- Novos cards -->
+<div class="container mt-4">
+    <h2>Dados dos seus parceiros</h2>
+    <div class="new-cards-container">
+        
+        <!-- Card de Parceiros Cadastrados -->
+        <div class="new-card" id="parceiros-cadastrados-card">
+            <h3>Parceiros Cadastrados</h3>
+            <p id="parceirosTotal"></p> <!-- Aqui será exibido o total -->
+            <!-- Ícone de Parceria (usando Font Awesome ou outro ícone) -->
+            <div class="card-footer text-center">
+                <i class="fas fa-users fa-2x"></i> <!-- Ícone de parceiros -->
             </div>
         </div>
+        
+        <!-- Card de Resíduos Disponíveis -->
+        <div class="new-card" id="residuos-disponiveis-card">
+            <h3>Resíduos disponíveis</h3>
+            <p id="residuosDisponiveis"></p> <!-- O número será atualizado aqui -->
+            <canvas id="graficoDisponiveis"></canvas> <!-- Aqui o gráfico será desenhado -->
+        </div>
+        
+        <!-- Card de Resíduos em Negociação -->
+        <div class="new-card" id="residuos-negociacao-card">
+            <h3>Resíduos em negociação</h3>
+            <p id="residuosNegociando"></p> <!-- O número será atualizado aqui -->
+            <canvas id="graficoNegociando"></canvas>
+        </div>
+        
+        <!-- Card de Resíduos Concluídos -->
+        <div class="new-card" id="residuos-concluidos-card">
+            <h3>Resíduos concluídos</h3>
+            <p id="residuosConcluidos"></p> <!-- O número será atualizado aqui -->
+            <canvas id="graficoConcluidos"></canvas>
+        </div>
+        
+        <!-- Card de Resíduos Cancelados -->
+        <div class="new-card" id="residuos-cancelados-card">
+            <h3>Resíduos cancelados</h3>
+            <p id="residuosCancelados"></p> <!-- O número será atualizado aqui -->
+            <canvas id="graficoCancelados"></canvas>
+        </div>
+        
     </div>
+</div>
+
 
     <!-- Gráfico de Tipo de Resíduo Mais Anunciado -->
     <div class="container mt-4">
-        <h3>Tipos dos resíduos anunciados</h3>
-        <canvas id="residuosChart" width="800" height="150"></canvas>
+        <h2>Tipos dos resíduos anunciados</h2>
+        <canvas id="residuosChart" width="800" height="300"></canvas>
     </div>
+
+
+    <div class="dashboard-container">
+        <h2>Destaques</h2>
+        <div class="dashboard-cards">
+            <div class="dashboard-card" id="empresa-mais-anuncia-card">
+                <h3>Maior anunciante</h3>
+                <p>EcoResíduos LTDA</p>
+            </div>
+            <div class="dashboard-card" id="empresa-mais-interessada-card">
+                <h3>Maior interessada</h3>
+                <p>GreenFuture Inc.</p>
+            </div>
+            <div class="dashboard-card" id="indice-sucesso-card">
+                <h3>Negociações concluídas</h3>
+                <p></p>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
 
 
     <script src="parceiros_scripts.js"></script>
