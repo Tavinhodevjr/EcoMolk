@@ -28,17 +28,18 @@ gmp-map {
 /* Cabeçalho */
 .navbar {
   position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: rgb(198, 211, 211);
-  font-size: 1rem;
-  padding: 10px;
-  z-index: 3; /* Aumenta o z-index para garantir que fique acima do botão de pesquisa */
+    top: 0;
+    width: 100%;
+    background-color: rgb(198, 211, 211);
+    font-size: 1.2rem;
+    padding: 10px;
+    z-index: 3; 
 }
 
 .nav-link {
-  font-weight: 600;
+  font-weight: 550;
   margin-right: 150px; /* Ajustado para melhor espaçamento */
+  color: rgba(27,74,120)
 }
 
 .nav-link:hover {

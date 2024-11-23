@@ -179,33 +179,52 @@ app.post('/residuos', verificaLogin, upload.single('imagem-residuo'), async (req
     }
 })
 
-//ROTA PARA EXIBIR OS RESÍDUOS (COM USUÁRIO LOGADO)
 app.get('/seusResiduos', verificaLogin, async (req, res) => {
-
     try {
-        //PORCURA PELO ID DO USUÁRIO NA TABELA RESIDUOS
+        // Busca os resíduos do usuário logado
         const residuos = await Residuos.findAll({
-            where: {
-                id_usuario: req.session.userId
-            }
-        })
+            where: { id_usuario: req.session.userId }
+        });
 
-        //VERIFICA SE O ID BATE NO BANCO DE DADOS
-        if(residuos.length === 0) {
-            return res.status(404).json({ message: 'Resíduos não encontrados.'})
+        // Verifica se encontrou resíduos
+        if (residuos.length === 0) {
+            return res.status(404).json({ message: 'Resíduos não encontrados.' });
         }
 
-        
-        //RETORNA OS RESÍDUOS DO USUÁRIO
-        return res.status(200).json({ message: 'Resíduos encontrados com sucesso:', residuos: residuos })
-    } 
-    
-    catch (error) {
-        //RETORNA UMA MENSAGEM DE ERRO
-        return res.status(500).json({ message: 'Erro ao exibir seus resíduos', error: error.message })
-    }
+        // Adiciona o nome da empresa interessada a cada resíduo
+        const residuosComEmpresa = await Promise.all(
+            residuos.map(async residuo => {
+                let nomeEmpresaInteressada = 'Sem registro';
+                if (residuo.id_usuario_interessado) {
+                    const usuarioInteressado = await Users.findOne({
+                        where: { id: residuo.id_usuario_interessado },
+                        attributes: ['nome_empresa']
+                    });
+                    if (usuarioInteressado) {
+                        nomeEmpresaInteressada = usuarioInteressado.nome_empresa;
+                    }
+                }
+                return {
+                    ...residuo.toJSON(), // Inclui todos os campos do resíduo
+                    nome_empresa_interessada: nomeEmpresaInteressada
+                };
+            })
+        );
 
-})
+        // Retorna os resíduos com os nomes das empresas interessadas
+        return res.status(200).json({
+            message: 'Resíduos encontrados com sucesso.',
+            residuos: residuosComEmpresa
+        });
+    } catch (error) {
+        // Retorna uma mensagem de erro
+        return res.status(500).json({
+            message: 'Erro ao exibir seus resíduos.',
+            error: error.message
+        });
+    }
+});
+
 
 // ROTA PARA OBTER RESÍDUOS DE OUTROS USUÁRIOS COM NOME DA EMPRESA
 app.get('/residuos/outsiders', verificaLogin, async (req, res) => {
@@ -708,13 +727,6 @@ app.get('/residuos/concluidos-porcentagem', verificaLogin, async (req, res) => {
     }
 });
 
-
-
-
-
-
-
-
 //ROTA PARA FAZER LOGOUT DO SISTEMA E EXCLUIR COOKIES DA SESSÃO
 app.post('/logout', (req, res) => {
     try {
@@ -748,6 +760,59 @@ app.post('/logout', (req, res) => {
         return res.status(500).json({ message: 'Erro no servidor ao tentar realizar o Logout.', error: error.message })
     }
 })
+
+app.get('/interessesResiduos', verificaLogin, async (req, res) => {
+    try {
+        // Busca os resíduos onde o usuário logado é o interessado
+        const residuosInteressados = await Residuos.findAll({
+            where: { id_usuario_interessado: req.session.userId }
+        });
+
+        // Verifica se encontrou resíduos
+        if (residuosInteressados.length === 0) {
+            return res.status(404).json({ message: 'Nenhum resíduo encontrado para este usuário.' });
+        }
+
+        // Adiciona o nome da empresa dona do resíduo a cada registro
+        const residuosComEmpresas = await Promise.all(
+            residuosInteressados.map(async residuo => {
+                let nomeEmpresaDona = 'Sem registro';
+
+                // Verifica se o resíduo possui o id_usuario associado
+                if (residuo.id_usuario) {
+                    const usuarioDono = await Users.findOne({
+                        where: { id: residuo.id_usuario },
+                        attributes: ['nome_empresa']
+                    });
+                    
+                    if (usuarioDono) {
+                        nomeEmpresaDona = usuarioDono.nome_empresa;
+                    }
+                }
+
+                // Retorna o resíduo com os dados adicionais
+                return {
+                    ...residuo.toJSON(), // Inclui todos os campos do resíduo
+                    nome_empresa_dona: nomeEmpresaDona
+                };
+            })
+        );
+
+        // Retorna os resíduos com os nomes das empresas donas
+        return res.status(200).json({
+            message: 'Resíduos encontrados com sucesso.',
+            residuos: residuosComEmpresas
+        });
+    } catch (error) {
+        // Retorna uma mensagem de erro
+        return res.status(500).json({
+            message: 'Erro ao exibir os resíduos de interesse.',
+            error: error.message
+        });
+    }
+});
+
+
 
 app.listen(3000, () =>{
     console.log('Servidor Funcionando');

@@ -64,7 +64,8 @@ body {
     outline: none;
     border: 1px solid rgba(27, 74, 120);
     background-color: rgba(27, 74, 120);
-    color: #ffffff
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(27, 74, 120, 0.5);
 }
 
 /* Texto do placeholder */
@@ -93,6 +94,7 @@ body {
     background-color: #0056b3;
     color: white;
     transform: scale(1.05);
+    background: linear-gradient(135deg, rgba(27, 74, 120, 1), rgba(0, 128, 128, 0.8));
 }
 
 h2 {

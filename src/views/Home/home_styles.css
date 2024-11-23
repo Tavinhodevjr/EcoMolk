@@ -62,7 +62,8 @@ body {
     outline: none;
     border: 1px solid rgba(27, 74, 120);
     background-color: rgba(27, 74, 120);
-    color: #ffffff
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(27, 74, 120, 0.5);
 }
 
 /* Texto do placeholder */
@@ -80,7 +81,8 @@ body {
     font-size: 1rem;
     border: 2px solid rgba(27, 74, 120);
     border-radius: 20px;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: transform 0.2s, background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .btn .fas {
@@ -92,6 +94,7 @@ body {
     background-color: #0056b3;
     color: white;
     transform: scale(1.05);
+    background: linear-gradient(135deg, rgba(27, 74, 120, 1), rgba(0, 128, 128, 0.8));
 }
 
 /* Botões */
@@ -107,7 +110,7 @@ body {
 
 .btn-conectar:hover {
     background-color: rgb(40, 190, 130); /* Cor mais escura para hover */
-    transform: translateY(-2px); /* Efeito de leve elevação ao passar o mouse */
+    transform: translateY(-2px);
 }
 
 /* Estilo dos cards */
@@ -132,8 +135,7 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-10px); /* Eleva o card ao passar o mouse */
-    border-color: #6795c7; /* Cor de borda ao passar o mouse */
+    transform: translateY(-5px); /* Eleva o card ao passar o mouse */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
 }
 

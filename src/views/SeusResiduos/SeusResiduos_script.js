@@ -1,5 +1,6 @@
 let residuos = []; // Armazena os dados para acesso nas funções
 
+
 async function carregarResiduos() {
     try {
         const response = await fetch('http://localhost:3000/seusResiduos');
@@ -67,19 +68,28 @@ window.searchResiduos = function () {
 function criarCard(residuo) {
     const imageUrl = residuo.imagem_residuo ? `data:image/jpeg;base64,${residuo.imagem_residuo}` : './sem_imagem_residuo.png';
     const opcoesStatus = gerarOpcoesStatus(residuo.status_residuo); // Chama a função para gerar as opções de status
+    // Formata a data para o formato dd/mm/aaaa
+    const dataFormatada = new Date(residuo.createdAt).toLocaleDateString('pt-BR');
+    const empresaInteressada = residuo.nome_empresa_interessada || "Sem registro"; // Verifica se há empresa interessada
     return `
         <div class="col-md-4 mb-4">
             <div class="card">
                 <img src="${imageUrl}" class="card-img-top" alt="Imagem do resíduo" style="width: 100%; height: auto; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${residuo.tipo}</h5>
-                    <p class="card-text">Descrição: ${residuo.descricao || 'Não informada'}</p>
-                    <p class="card-text">Quantidade: ${residuo.quantidade || 'Não informada'}</p>
-                    
-                    <label for="status-${residuo.id}">Status:</label>
-                    <select id="status-${residuo.id}" class="form-select" onchange="toggleUpdateButton(${residuo.id})">
-                        ${opcoesStatus}
-                    </select>
+                    <p class="card-text"><b>Descrição:</b> ${residuo.descricao || 'Não informada'}</p>
+                    <p class="card-text"><b>Quantidade:</b> ${residuo.quantidade || 'Não informada'}</p>
+                    <p class="card-text"><b>Cadastrado em:</b> ${dataFormatada}</p>
+                    <p class="card-text"><b>Entrega:</b> ${residuo.tipo_entrega || 'Não informada'}</p>
+                    <p class="card-text"><b>Empresa Interessada:</b> ${empresaInteressada}</p> <!-- Novo campo -->
+
+                    <!-- Ajuste na estrutura de Status -->
+                    <div class="d-flex align-items-center">
+                        <label for="status-${residuo.id}" class="me-2"><b>Status:</b></label>
+                        <select id="status-${residuo.id}" class="form-select form-select-sm" style="width: 220px;" onchange="toggleUpdateButton(${residuo.id})">
+                            ${opcoesStatus}
+                        </select>
+                    </div>
 
                     <button id="update-btn-${residuo.id}" class="btn btn-success mt-2" onclick="atualizarStatus(${residuo.id})" disabled>Atualizar</button>
                 </div>
@@ -87,6 +97,7 @@ function criarCard(residuo) {
         </div>
     `;
 }
+
 
 // Gera as opções de status dinamicamente
 function gerarOpcoesStatus(statusAtual) {
@@ -138,4 +149,95 @@ async function atualizarStatus(residuoId) {
     }
 }
 
+
+// Chama a função para carregar os interesses ao carregar a página
+
 carregarResiduos();
+
+let interesses = []; // Armazena os dados dos resíduos de interesse
+
+// Função para criar o card de resíduo de interesse
+function criarCardInteresse(residuo) {
+    const imageUrl = residuo.imagem_residuo ? `data:image/jpeg;base64,${residuo.imagem_residuo}` : './sem_imagem_residuo.png';
+    const dataFormatada = new Date(residuo.createdAt).toLocaleDateString('pt-BR');
+     // Adiciona o nome da empresa (de quem cadastrou o resíduo) ao card
+     const nomeEmpresaDona = residuo.nome_empresa_dona || 'Empresa não identificada';
+    
+    return `
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="${imageUrl}" class="card-img-top" alt="Imagem do resíduo" style="width: 100%; height: auto; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">${residuo.tipo}</h5>
+                    <p class="card-text"><b>Descrição:</b> ${residuo.descricao || 'Não informada'}</p>
+                    <p class="card-text"><b>Quantidade:</b> ${residuo.quantidade || 'Não informada'}</p>
+                    <p class="card-text"><b>Negociando com:</b> ${nomeEmpresaDona}</p> <!-- Novo campo "Negociando com" -->
+                    <p class="card-text"><b>Cadastrado em:</b> ${dataFormatada}</p>
+                    <p class="card-text"><b>Entrega:</b> ${residuo.tipo_entrega || 'Não informada'}</p>
+                    <p class="card-text"><b>Status:</b> ${residuo.status_residuo || 'Não informada'}</p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Função para exibir os resíduos de interesse no carrossel
+function displayInteressesCarousel(data) {
+    const container = document.getElementById('interesses-container');
+    container.innerHTML = '';
+
+    const itemsPerPage = 3;
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+
+    for (let i = 0; i < totalPages; i++) {
+        const carouselItem = document.createElement('div');
+        carouselItem.classList.add('carousel-item');
+        if (i === 0) carouselItem.classList.add('active');
+
+        const row = document.createElement('div');
+        row.classList.add('row');
+
+        const start = i * itemsPerPage;
+        const end = start + itemsPerPage;
+        const cardsToShow = data.slice(start, end);
+
+        cardsToShow.forEach(residuo => {
+            row.innerHTML += criarCardInteresse(residuo); // Cria os cards de resíduos de interesse
+        });
+
+        carouselItem.appendChild(row);
+        container.appendChild(carouselItem);
+    }
+}
+
+
+// Função para carregar os resíduos de interesse
+async function carregarInteressesResiduos() {
+    try {
+        const response = await fetch('http://localhost:3000/interessesResiduos');
+        const data = await response.json();
+
+        if (response.ok) {
+            interesses = data.residuos.map(residuo => {
+                if (residuo.imagem_residuo) {
+                    residuo.imagem_residuo = btoa(String.fromCharCode(...new Uint8Array(residuo.imagem_residuo.data)));
+                }
+                return residuo;
+            });
+
+            interesses = data.residuos; // Armazena os resíduos recebidos
+            displayInteressesCarousel(interesses); // Mostra os resíduos de interesse no carrossel
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao buscar resíduos de interesse:', error);
+    }
+}
+
+carregarInteressesResiduos();
+
+
+
+
+
