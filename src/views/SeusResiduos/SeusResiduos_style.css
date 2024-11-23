@@ -322,6 +322,9 @@ body {
     margin-left: auto; /* Posiciona o botão à direita dentro do contêiner */
     margin-right: 80px; /* Remove margem direita */
     font-family: 'Poppins', sans-serif;
+    z-index: 1050; /* Valor maior que o padrão do Bootstrap */
+    position: relative; /* Garante que o botão esteja acima de outros elementos */
+    
 }
 
 /* Efeito hover no botão de adicionar resíduo */
