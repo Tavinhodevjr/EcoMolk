@@ -63,13 +63,25 @@ body {
     outline: none;
     border: 1px solid rgba(27, 74, 120);
     background-color: rgba(27, 74, 120);
-    color: #ffffff
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(27, 74, 120, 0.5);
 }
 
 /* Texto do placeholder */
 .search-input::placeholder {
     color: #ffffff; /* Cor do texto do placeholder */
 }
+
+/* Estilo para o título "Seus resíduos cadastrados" */
+.residuos-title {
+    font-size: 2.8rem; /* Tamanho da fonte */
+    font-weight: 600; /* Peso da fonte */
+    color: #000000; /* Cor preta */
+    margin-bottom: 50px; /* Espaçamento abaixo */
+    text-align: center; /* Centraliza o texto */
+    margin-top: 30px; /* Espaçamento acima */
+}
+
 
 /* Botão de pesquisa */
 .btn {
@@ -80,7 +92,8 @@ body {
     font-size: 1rem;
     border: 2px solid rgba(27, 74, 120);
     border-radius: 20px;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: transform 0.2s, background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .btn .fas {
@@ -92,6 +105,7 @@ body {
     background-color: #0056b3;
     color: white;
     transform: scale(1.05);
+    background: linear-gradient(135deg, rgba(27, 74, 120, 1), rgba(0, 128, 128, 0.8));
 }
 
 /* Botões */
@@ -102,6 +116,41 @@ body {
     font-size: 0.8rem;
     padding: 0.4rem 0.8rem;
 }
+
+/* Configura a estrutura do card-body como flexível */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Garantir que o conteúdo acima do botão ocupe o máximo de espaço possível */
+    height: 100%; /* Garante que o card ocupe toda a altura disponível */
+}
+
+/* O botão de atualização vai para o final */
+.card-body .btn-success {
+    margin-top: auto; /* Empurra o botão para o final */
+}
+
+
+
+/* Estilo do título do card */
+.card-title {
+    font-size: 1.5rem; /* Tamanho da fonte maior */
+    font-weight: 550; /* Negrito */
+    color: #1B4A78; /* Cor do título */
+    text-align: center; /* Centraliza o título */
+    margin-bottom: 10px; /* Espaçamento abaixo */
+    
+}
+
+/* Estilo do texto do card */
+.card-text {
+    font-size: 1.1rem; /* Tamanho da fonte */
+    font-weight: 400; /* Peso normal */
+    color: #ffffff; /* Cor do texto */
+    line-height: 1.4; /* Espaçamento entre linhas */
+    text-align: justify; /* Alinha o texto justificado */
+}
+
 
 .card-footer {
     display: flex;
@@ -116,11 +165,11 @@ body {
 }
 
 .carousel-inner .card {
-    height: 550px; /* Aumenta a altura dos cards */
+    height: 540px; /* Aumenta a altura dos cards */
     width: 400px; /* Aumenta a largura dos cards */
     margin: 0 10px; /* Mantém margens laterais para espaçamento */
-    background-color: rgb(198, 211, 211);
-    border: 2px solid transparent;
+    background: rgb(111, 156, 138); /* Cor do fundo do card */
+    border: none;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, border-color 0.2s;
@@ -132,8 +181,8 @@ body {
 }
 
 .card img {
-    max-width: 80%; /* Limita a largura da imagem a 80% do card */
-    max-height: 250px; /* Limita a altura da imagem a 200px */
+    max-width: 50%; /* Limita a largura da imagem a 80% do card */
+    max-height: 150px; /* Limita a altura da imagem a 200px */
     object-fit: contain; /* Mantém a proporção da imagem */
     margin-top: 10px; /* Adiciona um espaço acima da imagem */
 }
@@ -162,44 +211,61 @@ body {
     height: 40px;
 }
 
-/* Estilização da caixa de seleção */
-.form-select {
-    background-color: rgb(198, 211, 211); /* Cor do fundo do card */
-    border: 1px solid #ddd; /* Cor da borda */
-    border-radius: 20px; /* Bordas arredondadas */
-    padding: 10px; /* Espaço interno */
-    font-size: 1rem; /* Tamanho da fonte */
-    color: #000; /* Cor do texto do campo */
-    width: 100%; /* Largura total do elemento */
-    transition: border 0.2s; /* Transição suave para mudanças */
+/* Ajusta a aparência do seletor */
+.card-body .form-select {
+    font-size: 1rem;
+    padding: 0.5rem 2rem; /* Ajusta o espaçamento interno */
+    text-align: left; /* Alinha o texto à esquerda */
 }
 
-/* Efeito ao focar na caixa de seleção */
+
+/* Estilização do label de Status */
+.card-body label {
+    font-weight: 400;  /* Peso de fonte intermediário */
+    font-size: 1.2rem; /* Tamanho da fonte */
+    color: #ffffff; /* Cor do texto (você pode mudar conforme o estilo) */
+    margin-bottom: 0.5rem; /* Margem inferior para separar do select */
+}
+
+/* Estilização da caixa de seleção (form-select) */
+.form-select {
+    background-color: rgb(111, 156, 138); /* Cor de fundo do select */
+    border: 1px solid rgb(255, 255, 255); /* Cor da borda */
+    border-radius: 10px; /* Bordas arredondadas */
+    padding: 60px; /* Espaço interno para dar mais espaço ao texto */
+    font-size: 1rem; /* Tamanho da fonte */
+    color: #ffffff; /* Cor do texto dentro do select */
+    width: 100%; /* Largura total, mas pode ajustar conforme necessário */
+    transition: border 0.2s, box-shadow 0.3s; /* Transições suaves */
+}
+
+/* Efeito de foco (quando o usuário clica ou passa o mouse sobre o select) */
 .form-select:focus {
     outline: none; /* Remove o contorno padrão */
-    border: 1px solid rgba(27, 74, 120); /* Cor da borda ao focar */
-    background-color: rgb(198, 211, 211); /* Cor de fundo ao focar */
+    border-color: rgb(111, 156, 138); /* Cor da borda quando em foco */
+    box-shadow: rgb(111, 156, 138); /* Sombra para efeito de foco */
+    background-color: rgb(111, 156, 138); /* Cor de fundo clara quando em foco */
 }
 
 /* Estilizando as opções da caixa de seleção */
 .form-select option {
-    background-color: rgb(198, 211, 211); /* Cor de fundo das opções */
+    background-color: rgba(111, 156, 138); /* Cor de fundo das opções */
     color: #000; /* Cor do texto das opções */
 }
 
 /* Estilo para as opções quando selecionadas */
 .form-select:focus option:checked {
-    background-color: rgb(198, 211, 211); /* Mantém a cor do fundo das opções selecionadas */
-    color: #000; /* Mantém a cor do texto das opções selecionadas */
+    background-color: rgba(111, 156, 138); /* Mantém a cor do fundo das opções selecionadas */
+    color: #ffffff; /* Mantém a cor do texto das opções selecionadas */
 }
 
 /* Scrollbar (opcional) */
 .form-select::-webkit-scrollbar {
-    width: 8px; /* Largura da barra de rolagem */
+    width: 100px; /* Largura da barra de rolagem */
 }
 
 .form-select::-webkit-scrollbar-thumb {
-    background: rgba(27, 74, 120); /* Cor da barra de rolagem */
+    background: rgba(111, 156, 138); /* Cor da barra de rolagem */
     border-radius: 4px; /* Bordas arredondadas da barra de rolagem */
 }
 
@@ -213,14 +279,17 @@ body {
     border: 2px solid rgba(27, 74, 120); /* Cor da borda quando habilitado */
     color: white; /* Cor do texto quando habilitado */
     font-size: 1rem; /* Tamanho da fonte */
-    padding: 0.4rem 0.8rem; /* Espaçamento interno */
+    padding: 0.5rem 0.1rem; /* Espaçamento interno */
     cursor: pointer; /* Muda o cursor para indicar que o botão é clicável */
     transition: background-color 0.3s, border-color 0.3s; /* Transição suave */
+    width: 100px; /* Ou defina um valor fixo, como 'width: 150px;' */
+    display: block; /* Faz o botão ser tratado como um bloco */
+    margin: 0 auto; /* Centraliza o botão horizontalmente */
 }
 
 /* Estado habilitado */
 .btn-success:hover {
-    background-color: #0056b3; /* Cor ao passar o mouse */
+    background-color: linear-gradient(135deg, rgba(27, 74, 120, 1), rgba(0, 128, 128, 0.8)); /* Cor ao passar o mouse */
     border-color: #0056b3; /* Altera a cor da borda ao passar o mouse */
 }
 
@@ -236,6 +305,62 @@ body {
 .btn-success:disabled:hover {
     background-color: rgba(27, 74, 120, 0.3); /* Mantém a cor quando desabilitado */
     border-color: rgba(27, 74, 120, 0.3); /* Mantém a cor da borda quando desabilitado */
+}
+
+
+/* Estilizando o botão de adicionar resíduo (do lado direito) */
+.btn-adicionar {
+    background-color: rgba(27, 74, 120); /* Cor do fundo quando habilitado */
+    border: 2px solid rgba(27, 74, 120); /* Cor da borda quando habilitado */
+    color: white; /* Cor do texto */
+    font-size: 1.3rem; /* Tamanho da fonte */
+    padding: 0.5rem 1.5rem; /* Espaçamento interno */
+    cursor: pointer; /* Muda o cursor para indicar que o botão é clicável */
+    transition: background-color 0.3s, border-color 0.3s; /* Transição suave */
+    width: 250px; /* Define a largura fixa do botão */
+    display: block; /* Faz o botão ocupar a largura do contêiner */
+    margin-left: auto; /* Posiciona o botão à direita dentro do contêiner */
+    margin-right: 80px; /* Remove margem direita */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Efeito hover no botão de adicionar resíduo */
+.btn-adicionar:hover {
+    background-color: linear-gradient(135deg, rgba(27, 74, 120, 1), rgba(0, 128, 128, 0.8)); /* Cor ao passar o mouse */
+    border-color: #0056b3; /* Altera a cor da borda ao passar o mouse */
+}
+
+/* Efeito de foco no botão de adicionar resíduo */
+.btn-adicionar:focus {
+    outline: none; /* Remove a borda padrão do foco */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Adiciona uma sombra de foco azul */
+}
+
+/* Adicionando estilo no contêiner do botão para garantir a posição correta */
+.container-btn {
+    display: flex; /* Habilita o uso do layout flexível */
+    justify-content: flex-end; /* Posiciona o botão à direita */
+}
+
+
+/* Estilo para o título "Seus resíduos cadastrados" */
+.residuos-title {
+    font-size: 2.8rem; /* Tamanho da fonte */
+    font-weight: 600; /* Peso da fonte */
+    color: #000000; /* Cor preta */
+    margin-bottom: 50px; /* Espaçamento abaixo */
+    text-align: center; /* Centraliza o texto */
+    margin-top: 70px; /* Espaçamento acima */
+}
+
+
+.interesses-title {
+    font-size: 2.8rem; /* Tamanho da fonte */
+    font-weight: 600; /* Peso da fonte */
+    color: #000000; /* Cor preta */
+    margin-bottom: 50px; /* Espaçamento abaixo */
+    text-align: center; /* Centraliza o texto */
+    margin-top: 120px; /* Espaçamento acima */
 }
 
 
