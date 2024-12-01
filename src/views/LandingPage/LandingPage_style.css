@@ -3,13 +3,167 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 * {
 	font-family: 'Montserrat', sans-serif;
 }
 body {
-
     overflow-x: hidden;
 	background: #f1fbff;
+}
+
+.verdinho{
+	display: flex;
+	margin-top: 170px;
+	width: 300px;
+	height: 100px;
+	background-color: rgba(111, 156, 138, 1);
+	border-radius: 20px;
+	justify-content: center; 
+	align-items: center;
+}
+
+
+.bemVindo{
+	
+	font-size: 40px;
+	color: rgba(27, 74, 120, 1);
+}
+
+.textoDeCima{
+	margin-bottom: 2000px;
+	display: flex; 
+	justify-content: center; 
+	align-items: center;
+	height: 200px;
+}
+
+.estamosProntos{
+	width: 1300px;
+}
+
+.lixosvariados{
+	width: 500px;
+	border-radius: 10%;
+}
+
+.containerAtrasDoAzul {
+	padding-bottom: 200px;
+	display: flex;
+    justify-content: center; 
+    align-items: center; 
+	position: relative; 
+}
+
+.containerAzul{
+	margin-top: 3230px;
+	margin-bottom: 5500px;
+	position: absolute;
+	width: 2600px;
+	height: 1700px;
+	background: linear-gradient(
+        to left, 
+        rgba(27, 74, 120, 1), 
+        rgba(57, 104, 134, 1), 
+        rgba(47, 153, 205, 1)  
+    );
+	border-radius: 80%;
+}
+
+.conteudoDoAzul{
+	flex-direction: column;
+    justify-content: space-between;
+	margin-top: 140px;
+	display: flex; 
+	align-items: center;
+}
+
+.itemAzul{
+	width: 900px;
+}
+
+.espaco{
+	margin-bottom: 150px;
+	width: 3000px;
+}
+
+.containerServices{
+	margin-top: 15px;
+	flex-direction: column;
+	display: flex;
+    justify-content: center; 
+    align-items: center; 
+	position: relative; 
+
+}
+
+.cardInfo{
+	margin-top: 100px;
+	display: flex;
+	border: 2px solid rgb(0, 0, 1);
+	width: 1600px;
+	height: 300px;
+}
+
+.tiraAzul{
+	display: flex;
+    justify-content: center; 
+    align-items: center; 
+	width: 3000px;
+	height: 100px;
+	background-color: rgba(27, 74, 120, 1);
+}
+
+.numeroVerde{
+	z-index: -1;
+	position: relative;
+	left: -80px;
+	justify-content: center; 
+    align-items: center; 
+	width: 300px;
+	height: 300px;
+
+}
+
+.textoInternoCardInfo{
+	left: -30px;
+	margin-top: 100px;
+	width: 900px;
+	height: 300px;
+	position: relative;
+}
+
+.textoAcima{
+	position: absolute;
+	margin-left: 850px;
+	margin-top: 20px;
+	width: 400px;
+	height: 50px;
+}
+
+.imgDoInfo{
+	position: absolute;
+	top: center;
+	left: center;
+	border-radius: 100%;
+	width: 290px;
+	height: 290px;
+	object-fit: cover;
+}
+
+.bgImgCardInfo{
+	left: 10px;
+	top: -28px;
+	overflow: hidden;
+	position: relative;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+	border-radius: 100%;
+	height: 350px;
+	width: 350px;
+	background-color: rgba(57, 104, 134, 1);
 }
 
 .section-padding {
