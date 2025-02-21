@@ -822,5 +822,5 @@ app.listen(3000, () =>{
         open.default(url); 
     }
 
-    // abrirPagina('http://localhost:3000/landingPage')
+    abrirPagina('http://localhost:3000/landingPage')
 })
