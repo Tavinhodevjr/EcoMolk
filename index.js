@@ -24,7 +24,10 @@ app.use('/src/views', express.static(path.join(__dirname, 'src', 'views')));
 app.use(express.json());
 app.use(bodyParser.text());
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
 app.use(session({
     secret: 'chave-secreta',
     resave: false,
@@ -39,7 +42,7 @@ async function conn() {
         await sequelize.authenticate(); //TENTA FAZER A CONEXÃO COM O BANCO
         console.log('Conexão estabelecida com sucesso.')
 
-        await sequelize.sync({ alter: false }) //{force: false} --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
+        await sequelize.sync({alter: false}) //({  force: true})  --> GARANTE QUE AS TABELAS JA EXISTENTES NÃO SEJAM SOBRESCRITAS
         console.log('Tabelas sincronizadas com sucesso.')
     }
 
@@ -97,7 +100,7 @@ app.get('/entregas', verificaLogin, (req, res) => {
 
 //ROTA PARA CADASTRO DE USUÁRIOS
 app.post('/cadastrar', async (req, res) => { 
-
+    console.log("Dados recebidos:", req.body);
     try {
         //SOLICITA OS DADOS DO CORPO DA REQUISIÇÃO
         const { nome, email, senha, telefone, nome_empresa } = req.body
